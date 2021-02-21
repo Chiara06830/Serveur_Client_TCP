@@ -5,6 +5,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -53,12 +59,15 @@ public class Main {
 			case "cd":
 				// Pas encore fonctionnel (pas de retour d'erreur)
 				envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
-				while (!lecture(client, in)) {
-					envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
+				if (!lecture(client, in)) {
+					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
 				}
 				break;
 			case "get":
-				// A FAIRE
+				envoieCommande(client, ps, sc, "get", "Veuillez rentrez le nom (absolu ou relatif) du fichier à lire : ");
+				if (!lectureGet(client, in)) {
+					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				}
 				break;
 			case "ls" :
 				envoieCommande(client, ps, null, "ls", null);
@@ -119,6 +128,35 @@ public class Main {
 			}
 			if ((msg.charAt(0)) == '0') {
 				return true;
+			}
+		}
+	}
+	
+	public static boolean lectureGet(Socket client, BufferedReader in) throws IOException {
+		while (true) {
+			String msg = in.readLine();
+			System.out.println(msg);
+			if ((msg.charAt(0)) == '2') {
+				return false; 
+			}
+			if ((msg.charAt(0)) == '0') {
+				Socket transfertGet = new Socket("localhost", Integer.parseInt(msg.substring(2)));
+				BufferedReader inTransfert = new BufferedReader(new InputStreamReader(transfertGet.getInputStream()));
+				List<String> lignes = new ArrayList<String>();
+				while (true) {
+					String ligne = inTransfert.readLine();
+					if ((ligne.charAt(0)) == '2') {
+						return false; 
+					}
+					if ((ligne.charAt(0)) == '0') {
+						Path fichier = Paths.get(ligne.split(" ")[1]);
+						Files.write(fichier, lignes, Charset.forName("UTF-8"));
+						inTransfert.close();
+						transfertGet.close();
+						return true; 
+					}
+					lignes.add(ligne.substring(2));
+				}
 			}
 		}
 	}

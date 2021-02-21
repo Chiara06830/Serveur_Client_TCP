@@ -4,6 +4,7 @@ public class CommandExecutor {
 	
 	public static boolean userOk = false ;
 	public static boolean pwOk = false ;
+	public static int prochainPort = 4502;
 	
 	public static void executeCommande(PrintStream ps, String commande) {
 		if(userOk && pwOk) {

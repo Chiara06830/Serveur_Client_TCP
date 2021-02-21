@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 
 public class CommandeSTOR extends Commande {
@@ -7,7 +8,12 @@ public class CommandeSTOR extends Commande {
 	}
 
 	public void execute() {
-		ps.println("La commande stor n'est pas encoré implémentée");
+		File file = new File("./commandeArgs[0]").getAbsoluteFile();
+		if (file.exists()) {
+			ps.println("0 Le repertoire existe");
+		}else {
+			ps.println("2 Le repertoire n'existe pas");
+		}
 	}
 
 }
