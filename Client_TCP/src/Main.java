@@ -10,53 +10,104 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		// connexion
-		Socket client = new Socket("localhost", 4500);
-		
 		// Initialisation des composantes pour la reception et l'envoie de messages
-		BufferedReader in =
-		        new BufferedReader(
-		            new InputStreamReader(client.getInputStream()));
+		Socket client = new Socket("localhost", 4500);
+		BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		OutputStream os = client.getOutputStream();
 		PrintStream ps = new PrintStream(os);
 		Scanner sc = new Scanner(System.in);
-		
-		// Reception du message de bienvenue du serveur
+				
+		// Reception du premier message de bienvenue du serveur
 		lecture(client, in);
 		
-		// Identification : commande USER
+		// Connexion
+		connexion(client, ps, in, sc);
+		
+		// Lancement du terminal de commande
+		choisirCommande(client, ps, in, sc, os);
+	}
+	
+	public static void connexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
+		// commande USER
 		envoieCommande(client, ps, sc, "user", "Veuillez rentrez votre identifiant : ");
 		while (!lecture(client, in)) {
 			envoieCommande(client, ps, sc, "user", "Veuillez rentrez votre identifiant : ");
 		}
-		
-		// Identification : commande PASS
+		// commande PASS
 		envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		while (!lecture(client, in)) {
 			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		}
-		
-		// Ou suis je ? : commande PWD
-		envoieCommande(client, ps, null, "pwd", null);
-		lecture(client, in);
-		
-		// Aller dans le dossier "test" ? : commande CD
-		// C:\travail\L3\Reseau_IP\mini-projet-clientServeurFTP\Serveur_Client_TCP\Serveur_TCP\test
-		envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
-		while (!lecture(client, in)) {
-			envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
+		System.out.println();
+	}
+	
+	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
+		boolean onContinue = true;
+		while (onContinue) {
+			System.out.print(">> ");
+			String cmd = sc.nextLine();
+			switch (cmd) {
+			case "bye" :
+				onContinue = false;
+				break;
+			case "cd":
+				// Pas encore fonctionnel (pas de retour d'erreur)
+				envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
+				while (!lecture(client, in)) {
+					envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
+				}
+				break;
+			case "get":
+				// A FAIRE
+				break;
+			case "ls" :
+				envoieCommande(client, ps, null, "ls", null);
+				lecture(client, in);
+				break;
+			case "pwd" :
+				envoieCommande(client, ps, null, "pwd", null);
+				lecture(client, in);
+				break;
+			case "stor" :
+				// A FAIRE
+				break;
+			default:
+				System.out.print("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+			}
 		}
-		
-		// Ou suis je ? : commande PWD
-		envoieCommande(client, ps, null, "pwd", null);
+		deconnexion(client, ps, in, sc, os);
+	}
+	
+	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
+		// Fermeture du serveur
+		envoieCommande(client, ps, null, "bye", null);
 		lecture(client, in);
 		
-		// Déconnexion du serveur
+		// Demande de reconnexion
+		System.out.print("Souhaitez vous fermé le client ? commandes disponibles : (quit, login)\n");
+		boolean onContinue = true;
+		while (onContinue) {
+			System.out.print(">> ");
+			String cmd = sc.nextLine();
+			switch (cmd) {
+			// Reconnexion
+			case "login" :
+				connexion(client, ps, in, sc);
+				choisirCommande(client, ps, in, sc, os);
+				break;
+			// Fermeture du client
+			case "quit" :
+				onContinue = false;
+				break;
+			default:
+				System.out.print("commande inconnu - commandes disponibles : (quit, login)\n");
+			}
+		}
 		ps.println("bye");
-		
 		sc.close();
 		os.close();
 		client.close();
+		System.exit(1);
 	}
 	
 	public static boolean lecture(Socket client, BufferedReader in) throws IOException {
@@ -76,7 +127,7 @@ public class Main {
 		String cmd = commande + " ";
 		if (sc != null || directive != null) { // commande avec argument
 			System.out.print(directive);
-			cmd += sc.nextLine();
+			cmd += sc.nextLine(); // demande de l'argument
 		}
 		ps.println(cmd);
 	}

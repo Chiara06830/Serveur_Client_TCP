@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 
 public class CommandeLS extends Commande {
@@ -7,7 +8,12 @@ public class CommandeLS extends Commande {
 	}
 
 	public void execute() {
-		ps.println("La commande ls n'est pas encoré implémentée");
+		String[] fichiers = new File(".").list();
+		int taille = fichiers.length;
+		for(int i = 0; i < taille; i++) {
+			if (i == taille - 1) ps.println("0 " + fichiers[i]);
+			else ps.println("1 " + fichiers[i]);
+         }
 	}
 
 }
