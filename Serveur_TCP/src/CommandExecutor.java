@@ -31,7 +31,7 @@ public class CommandExecutor {
 				if(commande.split(" ")[0].equals("user")) (new CommandeUSER(ps, commande)).execute();
 			}
 			else
-				ps.println("2 Vous n'Ãªtes pas connectÃ© !");
+				ps.println("2 Vous n'êtes pas connecté !");
 		}
 	}
 

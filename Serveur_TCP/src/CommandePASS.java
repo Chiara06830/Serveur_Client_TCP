@@ -11,7 +11,7 @@ public class CommandePASS extends Commande {
 		if(commandeArgs[0].toLowerCase().equals("abcd")) {
 			CommandExecutor.pwOk = true;
 			ps.println("1 Commande pass OK");
-			ps.println("0 Vous Ãªtes bien connectÃ© sur notre serveur");
+			ps.println("0 Vous êtes bien connecté sur notre serveur");
 
 		}
 		else {

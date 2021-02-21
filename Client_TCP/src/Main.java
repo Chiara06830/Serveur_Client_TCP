@@ -42,9 +42,9 @@ public class Main {
 		
 		// Aller dans le dossier "test" ? : commande CD
 		// C:\travail\L3\Reseau_IP\mini-projet-clientServeurFTP\Serveur_Client_TCP\Serveur_TCP\test
-		envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin absolu du répertoire que vous souhaitez accéder : ");
+		envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
 		while (!lecture(client, in)) {
-			envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin absolu du répertoire que vous souhaitez accéder : ");
+			envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
 		}
 		
 		// Ou suis je ? : commande PWD

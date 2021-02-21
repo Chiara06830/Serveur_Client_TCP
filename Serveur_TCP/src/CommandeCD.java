@@ -8,7 +8,14 @@ public class CommandeCD extends Commande {
 	}
 
 	public void execute() {
-		File directory = new File(commandeArgs[0]).getAbsoluteFile();
+		File f = new File (commandeArgs[0]).getAbsoluteFile();
+		if (f.exists()){
+			ps.println("0 Le repertoire existe");
+			//System.setProperty("user.dir", f.getAbsolutePath());
+		}else{
+			ps.println("2 Le repertoire n'existe pas");
+		}
+		/*File directory = new File(commandeArgs[0]).getAbsoluteFile();
 		if (directory.exists() || directory.mkdirs()) {
 			boolean ret = System.setProperty("user.dir", directory.getAbsolutePath()) != null;
 			if (ret) {
@@ -16,10 +23,10 @@ public class CommandeCD extends Commande {
 				ps.println("0 " + s);
 			} else {
 				ps.println("2 Impossible de changer de répertoire courant");
-			}
-		} else {
+			}*/
+		/*} else {
 			ps.println("2 Le repertoire n'existe pas");
-		}
+		}*/
 	}
 
 }
