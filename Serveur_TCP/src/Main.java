@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Le Serveur FTP");
 		
-		ServerSocket serveurFTP = new ServerSocket(2121);
+		ServerSocket serveurFTP = new ServerSocket(4501);
 		Socket socket = serveurFTP.accept();
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
