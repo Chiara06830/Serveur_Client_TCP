@@ -11,7 +11,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// connexion
-		Socket client = new Socket("localhost", 4501);
+		Socket client = new Socket("localhost", 4500);
 		
 		// Initialisation des composantes pour la reception et l'envoie de messages
 		BufferedReader in =
@@ -26,11 +26,26 @@ public class Main {
 		
 		// Identification : commande USER
 		envoieCommande(client, ps, sc, "user", "Veuillez rentrez votre identifiant : ");
-		lecture(client, in);
+		while (!lecture(client, in)) {
+			envoieCommande(client, ps, sc, "user", "Veuillez rentrez votre identifiant : ");
+		}
 		
 		// Identification : commande PASS
 		envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
+		while (!lecture(client, in)) {
+			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
+		}
+		
+		// Ou suis je ? : commande PWD
+		envoieCommande(client, ps, null, "pwd", null);
 		lecture(client, in);
+		
+		// Aller dans le dossier "test" ? : commande CD
+		// C:\travail\L3\Reseau_IP\mini-projet-clientServeurFTP\Serveur_Client_TCP\Serveur_TCP\test
+		envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin absolu du répertoire que vous souhaitez accéder : ");
+		while (!lecture(client, in)) {
+			envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin absolu du répertoire que vous souhaitez accéder : ");
+		}
 		
 		// Ou suis je ? : commande PWD
 		envoieCommande(client, ps, null, "pwd", null);
@@ -44,16 +59,15 @@ public class Main {
 		client.close();
 	}
 	
-	public static void lecture(Socket client, BufferedReader in) throws IOException {
-		boolean onContinueALire = true;
-		while (onContinueALire) {
+	public static boolean lecture(Socket client, BufferedReader in) throws IOException {
+		while (true) {
 			String msg = in.readLine();
 			System.out.println(msg);
 			if ((msg.charAt(0)) == '2') {
-				System.exit(-1); // Problème
+				return false; 
 			}
 			if ((msg.charAt(0)) == '0') {
-				onContinueALire = false;
+				return true;
 			}
 		}
 	}
