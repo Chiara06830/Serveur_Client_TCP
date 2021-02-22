@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,13 +24,10 @@ public class Main {
 		OutputStream os = client.getOutputStream();
 		PrintStream ps = new PrintStream(os);
 		Scanner sc = new Scanner(System.in);
-				
 		// Reception du premier message de bienvenue du serveur
 		lecture(client, in);
-		
 		// Connexion
 		connexion(client, ps, in, sc);
-		
 		// Lancement du terminal de commande
 		choisirCommande(client, ps, in, sc, os);
 	}
@@ -53,7 +52,7 @@ public class Main {
 			System.out.print(">> ");
 			String cmd = sc.nextLine();
 			switch (cmd) {
-			case "bye" :
+			case "bye":
 				onContinue = false;
 				break;
 			case "cd":
@@ -64,21 +63,23 @@ public class Main {
 				}
 				break;
 			case "get":
-				envoieCommande(client, ps, sc, "get", "Veuillez rentrez le nom (absolu ou relatif) du fichier à lire : ");
+				envoieCommande(client, ps, sc, "get", "Veuillez rentrez le nom (absolu ou relatif) du fichier à télécharger : ");
 				if (!lectureGet(client, in)) {
 					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
 				}
 				break;
-			case "ls" :
+			case "ls":
 				envoieCommande(client, ps, null, "ls", null);
 				lecture(client, in);
 				break;
-			case "pwd" :
+			case "pwd":
 				envoieCommande(client, ps, null, "pwd", null);
 				lecture(client, in);
 				break;
-			case "stor" :
-				// A FAIRE
+			case "stor":
+				if (!lectureStor(client, in, ps, sc)) {
+					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				}
 				break;
 			default:
 				System.out.print("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
@@ -91,7 +92,6 @@ public class Main {
 		// Fermeture du serveur
 		envoieCommande(client, ps, null, "bye", null);
 		lecture(client, in);
-		
 		// Demande de reconnexion
 		System.out.print("Souhaitez vous fermé le client ? commandes disponibles : (quit, login)\n");
 		boolean onContinue = true;
@@ -161,11 +161,46 @@ public class Main {
 		}
 	}
 	
+	public static boolean lectureStor(Socket client, BufferedReader in, PrintStream ps, Scanner sc) throws IOException {
+		System.out.print("Veuillez rentrez le nom (absolu ou relatif) du fichier à envoyé : ");
+		String nomFile = sc.nextLine(); // ajout de l'argument
+		File file = new File(nomFile).getAbsoluteFile();
+		// C'est un fichier ? && Ce n'est pas un repertoire ?
+		if (file.exists() && !file.isDirectory()) {
+			ps.println("stor " + nomFile);
+			while (true) {
+				String msg = in.readLine();
+				System.out.println(msg);
+				if ((msg.charAt(0)) == '2') {
+					return false; 
+				}
+				if ((msg.charAt(0)) == '0') {
+					Socket transfertStor = new Socket("localhost", Integer.parseInt(msg.substring(2)));
+					BufferedReader inTransfert = new BufferedReader(new FileReader(file));
+					PrintStream psTransfert = new PrintStream(transfertStor.getOutputStream());
+	
+					String ligne;
+					while ((ligne = inTransfert.readLine()) != null)
+						psTransfert.println("1 " + ligne);
+					psTransfert.println("0 " + "ccc.txt" + " : Transfert terminé.");
+					
+					inTransfert.close();
+					psTransfert.close();
+					transfertStor.close();
+					return true; 
+				}
+			}
+		} else {
+			System.out.println("Le fichier est introuvable.");
+			return false;
+		}
+	}
+	
 	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
 		String cmd = commande + " ";
 		if (sc != null || directive != null) { // commande avec argument
 			System.out.print(directive);
-			cmd += sc.nextLine(); // demande de l'argument
+			cmd += sc.nextLine(); // ajout de l'argument
 		}
 		ps.println(cmd);
 	}

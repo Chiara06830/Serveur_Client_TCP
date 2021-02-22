@@ -9,7 +9,7 @@ public class CommandeCD extends Commande {
 
 	public void execute() {
 		File f = new File (commandeArgs[0]).getAbsoluteFile();
-		if (f.exists()) {
+		if (f.isDirectory()) {
 			ps.println("0 Le repertoire existe");
 			//System.setProperty("user.dir", f.getAbsolutePath());
 		}else {

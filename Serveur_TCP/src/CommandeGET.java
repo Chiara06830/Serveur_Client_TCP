@@ -15,8 +15,9 @@ public class CommandeGET extends Commande {
 
 	public void execute() {
 		File file = new File(commandeArgs[0]).getAbsoluteFile();
-		if (file.exists()) {
-			ps.println("1 Le fichier est prêt à être lu. Port de transfert :");
+		// C'est un fichier ? && Ce n'est pas un repertoire ?
+		if (file.exists() && !file.isDirectory()) {
+			ps.println("1 Le fichier est prêt à être envoyé. Port de transfert :");
 			ps.println("0 " + CommandExecutor.prochainPort);
 			try {
 				ServerSocket serveurFTP = new ServerSocket(CommandExecutor.prochainPort);
@@ -31,6 +32,7 @@ public class CommandeGET extends Commande {
 				
 				br.close();
 				psTransfert.close();
+				serveurFTP.close();
 				socket.close();
 				CommandExecutor.prochainPort += 1;
 			} catch (IOException e) {
@@ -38,7 +40,7 @@ public class CommandeGET extends Commande {
 				e.printStackTrace();
 			}
 		}else {
-			ps.println("2 Le fichier n'existe pas");
+			ps.println("2 Le fichier est introuvable");
 		}
 	}
 
