@@ -43,7 +43,7 @@ public class Main {
 		while (!lecture(client, in)) {
 			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		}
-		System.out.println();
+		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,man) - utilisez man pour plus de précision sur une commande.");
 	}
 	
 	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
@@ -64,7 +64,7 @@ public class Main {
 					ps.println(cmd + " "); // appel la commande bye du serveur -> ce n'est pas la fin du serveur
 					onContinue = false;
 				} else {
-					System.out.print("argument incorrect - bye ne prend aucun argument\n");
+					System.out.println("argument incorrect - bye ne prend aucun argument");
 				}
 				break;
 			case "cd":
@@ -72,20 +72,20 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.print("argument incorrect - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder\n");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder");
 					}
 				} else {
-					System.out.print("argument incorrect - cd prend un argument\n");
+					System.out.println("argument incorrect - cd prend un argument");
 				}
 				break;
 			case "get":
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lectureGet(client, in)) {
-						System.out.print("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur\n");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur");
 					}
 				} else {
-					System.out.print("argument incorrect - get prend un argument\n");
+					System.out.println("argument incorrect - get prend un argument");
 				}
 				break;
 			case "ls":
@@ -93,7 +93,7 @@ public class Main {
 					ps.println(cmd);
 					lecture(client, in);
 				} else {
-					System.out.print("argument incorrect - ls ne prend aucun argument\n");
+					System.out.println("argument incorrect - ls ne prend aucun argument");
 				}
 				break;
 			case "pwd":
@@ -101,7 +101,7 @@ public class Main {
 					ps.println(cmd);
 					lecture(client, in);
 				} else {
-					System.out.print("argument incorrect - pwd ne prend aucun argument\n");
+					System.out.println("argument incorrect - pwd ne prend aucun argument");
 				}
 				break;
 			case "stor":
@@ -110,11 +110,39 @@ public class Main {
 						System.out.print("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur\n");
 					}
 				} else {
-					System.out.print("argument incorrect - stor prend un argument\n");
+					System.out.println("argument incorrect - stor prend un argument");
+				}
+				break;
+			case "man":
+				if (cmd.split(" ").length == 2) {
+					switch (cmd.split(" ")[1]) {
+					case "bye":
+						System.out.println("bye permet de ce déconnecter - aucun argument");
+						break;
+					case "cd":
+						System.out.println("cd permet de ce déplacer sur le serveur - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder");
+						break;
+					case "get":
+						System.out.println("get permet de télécharger un fichier sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur");
+						break;
+					case "ls":
+						System.out.println("ls permet de voir tous les fichiers du répertoire courant sur le serveur - aucun argument");
+						break;
+					case "pwd":
+						System.out.println("pwd renvoie votre position actuel sur le serveur - aucun argument");
+						break;
+					case "stor":
+						System.out.println("stor permet d'envoyer sur le serveur un fichier (crée sur le répertoire courant) - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur");
+						break;
+					default:
+						System.out.println("argument incorrect - arguments disponibles : (cd,get,ls,pwd,stor,bye)");
+					}
+				} else {
+					System.out.println("argument incorrect - man prend un argument");
 				}
 				break;
 			default:
-				System.out.print("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,man) - utilisez man pour plus de précision sur une commande.");
 			}
 		}
 		deconnexion(client, ps, in, sc, os);
@@ -124,30 +152,51 @@ public class Main {
 		// Fermeture du serveur
 		lecture(client, in);
 		// Demande de reconnexion
-		System.out.print("Souhaitez vous fermé le client ? commandes disponibles : (quit, login)\n");
-		boolean onContinue = true;
-		while (onContinue) {
+		System.out.println("Souhaitez vous fermé le client ? commandes disponibles : (quit,login,man)");
+		while (true) {
 			System.out.print(">> ");
 			String cmd = sc.nextLine();
-			switch (cmd) {
+			switch (cmd.split(" ")[0]) {
 			// Reconnexion
 			case "login" :
-				connexion(client, ps, in, sc);
-				choisirCommande(client, ps, in, sc, os);
+				if (cmd.split(" ").length == 1) {
+					connexion(client, ps, in, sc);
+					choisirCommande(client, ps, in, sc, os);
+				} else {
+					System.out.println("argument incorrect - login ne prend aucun argument");
+				}
 				break;
 			// Fermeture du client
 			case "quit" :
-				onContinue = false;
+				if (cmd.split(" ").length == 1) {
+					ps.println("bye");
+					sc.close();
+					os.close();
+					client.close();
+					System.exit(1);
+				} else {
+					System.out.println("argument incorrect - quit ne prend aucun argument");
+				}
+			case "man" :
+				if (cmd.split(" ").length == 2) {
+					switch (cmd.split(" ")[1]) {
+					case "quit":
+						System.out.println("quit permet de fermer le client - aucun argument");
+						break;
+					case "login":
+						System.out.println("login permet de se connecté sur le serveur - aucun argument");
+						break;
+					default:
+						System.out.println("argument incorrect - arguments disponibles : (quit,login)");
+					}
+				} else {
+					System.out.println("argument incorrect - man prend un argument");
+				}
 				break;
 			default:
-				System.out.print("commande inconnu - commandes disponibles : (quit, login) - Ces deux commandes ne prennent aucun argument\n");
+				System.out.println("commande inconnu - commandes disponibles : (quit,login,man) - utilisez man pour plus de précision sur une commande.");
 			}
 		}
-		ps.println("bye");
-		sc.close();
-		os.close();
-		client.close();
-		System.exit(1);
 	}
 	
 	public static boolean lecture(Socket client, BufferedReader in) throws IOException {
