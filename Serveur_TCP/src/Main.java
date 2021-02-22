@@ -38,11 +38,17 @@ public class Main {
 			}
 			
 			System.out.println("Le client c'est déconnecté.");
+			CommandExecutor.userOk = false;
+			CommandExecutor.pwOk = false;
+			CommandExecutor.emplacement = ".";
 			serveurFTP.close();
 			socket.close();
 			main(args);
 		} catch (IOException e) {
 			System.out.println("Le client c'est déconnecté.");
+			CommandExecutor.userOk = false;
+			CommandExecutor.pwOk = false;
+			CommandExecutor.emplacement = ".";
 			try {
 				serveurFTP.close();
 				socket.close();

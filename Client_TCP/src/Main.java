@@ -35,7 +35,7 @@ public class Main {
 			connexion(client, ps, in, sc);
 			// Lancement du terminal de commande
 			choisirCommande(client, ps, in, sc);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Le serveur a rencontrer un problème et n'est plus disponible.");
 			ps.println("bye");
 			sc.close();
@@ -48,7 +48,7 @@ public class Main {
 		}
 	}
 	
-	public static void connexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
+	public static void connexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws Exception {
 		// commande USER
 		envoieCommande(client, ps, sc, "user", "Veuillez rentrez votre identifiant : ");
 		while (!lecture(client, in)) {
@@ -62,14 +62,19 @@ public class Main {
 		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
 	}
 	
-	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
+	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws Exception {
 		String cmd = commande + " ";
 		System.out.print(directive);
-		cmd += sc.nextLine();
+		String entree = sc.nextLine();
+		while (entree.equals("")) {
+			System.out.print(directive);
+			entree = sc.nextLine();
+		}
+		cmd += entree;
 		ps.println(cmd);
 	}
 	
-	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
+	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws Exception {
 		boolean onContinue = true;
 		while (onContinue) {
 			System.out.print(">> ");
@@ -203,7 +208,7 @@ public class Main {
 		deconnexion(client, ps, in, sc);
 	}
 	
-	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
+	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws Exception {
 		// Fermeture du serveur
 		lecture(client, in);
 		// Demande de reconnexion
@@ -254,7 +259,7 @@ public class Main {
 		}
 	}
 	
-	public static boolean lecture(Socket client, BufferedReader in) throws IOException {
+	public static boolean lecture(Socket client, BufferedReader in) throws Exception {
 		while (true) {
 			String msg = in.readLine();
 			System.out.println(msg);

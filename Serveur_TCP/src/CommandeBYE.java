@@ -10,6 +10,7 @@ public class CommandeBYE extends Commande {
 	public void execute() {
 		CommandExecutor.userOk = false;
 		CommandExecutor.pwOk = false;
+		CommandExecutor.emplacement = ".";
 		ps.println("0 Vous avez été déconnecté");
 	}
 
