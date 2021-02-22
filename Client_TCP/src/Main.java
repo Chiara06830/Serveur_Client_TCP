@@ -17,19 +17,35 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		// Initialisation des composantes pour la reception et l'envoie de messages
-		Socket client = new Socket("localhost", 4500);
-		BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-		OutputStream os = client.getOutputStream();
-		PrintStream ps = new PrintStream(os);
-		Scanner sc = new Scanner(System.in);
-		// Reception du premier message de bienvenue du serveur
-		lecture(client, in);
-		// Connexion
-		connexion(client, ps, in, sc);
-		// Lancement du terminal de commande
-		choisirCommande(client, ps, in, sc, os);
+		Socket client = null;
+		BufferedReader in = null;
+		PrintStream ps = null;
+		Scanner sc = null;
+		
+		try {
+			client = new Socket("localhost", 4500);
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			ps = new PrintStream(client.getOutputStream());
+			sc = new Scanner(System.in);
+			// Reception du premier message de bienvenue du serveur
+			lecture(client, in);
+			// Connexion
+			connexion(client, ps, in, sc);
+			// Lancement du terminal de commande
+			choisirCommande(client, ps, in, sc);
+		} catch (IOException e) {
+			System.out.println("Le serveur a rencontrer un problème et n'est plus disponible.");
+			ps.println("bye");
+			sc.close();
+			try {
+				client.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			System.exit(1);
+		}
 	}
 	
 	public static void connexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
@@ -53,7 +69,7 @@ public class Main {
 		ps.println(cmd);
 	}
 	
-	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
+	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
 		boolean onContinue = true;
 		while (onContinue) {
 			System.out.print(">> ");
@@ -184,10 +200,10 @@ public class Main {
 				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
 			}
 		}
-		deconnexion(client, ps, in, sc, os);
+		deconnexion(client, ps, in, sc);
 	}
 	
-	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
+	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc) throws IOException {
 		// Fermeture du serveur
 		lecture(client, in);
 		// Demande de reconnexion
@@ -200,7 +216,7 @@ public class Main {
 			case "login" :
 				if (cmd.split(" ").length == 1) {
 					connexion(client, ps, in, sc);
-					choisirCommande(client, ps, in, sc, os);
+					choisirCommande(client, ps, in, sc);
 				} else {
 					System.out.println("argument incorrect - login ne prend aucun argument");
 				}
@@ -209,8 +225,8 @@ public class Main {
 			case "quit" :
 				if (cmd.split(" ").length == 1) {
 					ps.println("bye");
+					in.close();
 					sc.close();
-					os.close();
 					client.close();
 					System.exit(1);
 				} else {

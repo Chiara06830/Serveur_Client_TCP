@@ -13,13 +13,14 @@ import java.net.Socket;
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("Le Serveur FTP");
+		System.out.println("Serveur FTP actif");
 		
 		ServerSocket serveurFTP = null;
 		Socket socket = null;
 		try {
 			serveurFTP = new ServerSocket(4500);
 			socket = serveurFTP.accept();
+			System.out.println("Le client c'est connecté.");
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintStream ps = new PrintStream(socket.getOutputStream());
@@ -38,6 +39,7 @@ public class Main {
 			
 			serveurFTP.close();
 			socket.close();
+			main(args);
 		} catch (IOException e) {
 			System.out.println("Le client c'est déconnecté.");
 			try {
