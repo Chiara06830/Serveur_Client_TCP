@@ -46,39 +46,71 @@ public class Main {
 		System.out.println();
 	}
 	
+	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
+		String cmd = commande + " ";
+		System.out.print(directive);
+		cmd += sc.nextLine();
+		ps.println(cmd);
+	}
+	
 	public static void choisirCommande(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
 		boolean onContinue = true;
 		while (onContinue) {
 			System.out.print(">> ");
 			String cmd = sc.nextLine();
-			switch (cmd) {
+			switch (cmd.split(" ")[0]) {
 			case "bye":
-				onContinue = false;
+				if (cmd.split(" ").length == 1) {
+					ps.println(cmd + " "); // appel la commande bye du serveur -> ce n'est pas la fin du serveur
+					onContinue = false;
+				} else {
+					System.out.print("argument incorrect - bye ne prend aucun argument\n");
+				}
 				break;
 			case "cd":
-				// Pas encore fonctionnel (pas de retour d'erreur)
-				envoieCommande(client, ps, sc, "cd", "Veuillez rentrez le chemin (absolu ou relatif) du répertoire que vous souhaitez accéder : ");
-				if (!lecture(client, in)) {
-					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				// Pas encore fonctionnel
+				if (cmd.split(" ").length == 2) {
+					ps.println(cmd);
+					if (!lecture(client, in)) {
+						System.out.print("argument incorrect - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder\n");
+					}
+				} else {
+					System.out.print("argument incorrect - cd prend un argument\n");
 				}
 				break;
 			case "get":
-				envoieCommande(client, ps, sc, "get", "Veuillez rentrez le nom (absolu ou relatif) du fichier à télécharger : ");
-				if (!lectureGet(client, in)) {
-					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				if (cmd.split(" ").length == 2) {
+					ps.println(cmd);
+					if (!lectureGet(client, in)) {
+						System.out.print("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur\n");
+					}
+				} else {
+					System.out.print("argument incorrect - get prend un argument\n");
 				}
 				break;
 			case "ls":
-				envoieCommande(client, ps, null, "ls", null);
-				lecture(client, in);
+				if (cmd.split(" ").length == 1) {
+					ps.println(cmd);
+					lecture(client, in);
+				} else {
+					System.out.print("argument incorrect - ls ne prend aucun argument\n");
+				}
 				break;
 			case "pwd":
-				envoieCommande(client, ps, null, "pwd", null);
-				lecture(client, in);
+				if (cmd.split(" ").length == 1) {
+					ps.println(cmd);
+					lecture(client, in);
+				} else {
+					System.out.print("argument incorrect - pwd ne prend aucun argument\n");
+				}
 				break;
 			case "stor":
-				if (!lectureStor(client, in, ps, sc)) {
-					System.out.print("argument incorrect - commandes disponibles : (cd,get,ls,pwd,stor,bye)\n");
+				if (cmd.split(" ").length == 2) {
+					if (!executionEtLectureStor(client, in, ps, sc, cmd.split(" ")[1])) {
+						System.out.print("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur\n");
+					}
+				} else {
+					System.out.print("argument incorrect - stor prend un argument\n");
 				}
 				break;
 			default:
@@ -90,7 +122,6 @@ public class Main {
 	
 	public static void deconnexion(Socket client, PrintStream ps, BufferedReader in, Scanner sc, OutputStream os) throws IOException {
 		// Fermeture du serveur
-		envoieCommande(client, ps, null, "bye", null);
 		lecture(client, in);
 		// Demande de reconnexion
 		System.out.print("Souhaitez vous fermé le client ? commandes disponibles : (quit, login)\n");
@@ -109,7 +140,7 @@ public class Main {
 				onContinue = false;
 				break;
 			default:
-				System.out.print("commande inconnu - commandes disponibles : (quit, login)\n");
+				System.out.print("commande inconnu - commandes disponibles : (quit, login) - Ces deux commandes ne prennent aucun argument\n");
 			}
 		}
 		ps.println("bye");
@@ -161,13 +192,11 @@ public class Main {
 		}
 	}
 	
-	public static boolean lectureStor(Socket client, BufferedReader in, PrintStream ps, Scanner sc) throws IOException {
-		System.out.print("Veuillez rentrez le nom (absolu ou relatif) du fichier à envoyé : ");
-		String nomFile = sc.nextLine(); // ajout de l'argument
-		File file = new File(nomFile).getAbsoluteFile();
+	public static boolean executionEtLectureStor(Socket client, BufferedReader in, PrintStream ps, Scanner sc, String argument) throws IOException {
+		File file = new File(argument).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
-			ps.println("stor " + nomFile);
+			ps.println("stor " + argument);
 			while (true) {
 				String msg = in.readLine();
 				System.out.println(msg);
@@ -194,15 +223,6 @@ public class Main {
 			System.out.println("Le fichier est introuvable.");
 			return false;
 		}
-	}
-	
-	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
-		String cmd = commande + " ";
-		if (sc != null || directive != null) { // commande avec argument
-			System.out.print(directive);
-			cmd += sc.nextLine(); // ajout de l'argument
-		}
-		ps.println(cmd);
 	}
 
 }
