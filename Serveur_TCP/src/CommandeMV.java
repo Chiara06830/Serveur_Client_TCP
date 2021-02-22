@@ -3,13 +3,13 @@ import java.io.PrintStream;
 
 public class CommandeMV extends Commande {
 	
-	public CommandeMV(PrintStream ps, String commandeStr) {
-		super(ps, commandeStr);
+	public CommandeMV(PrintStream ps, String commandeStr, GestionUnClient unClient) {
+		super(ps, commandeStr, unClient);
 	}
 
 	public void execute() {
-		File sourceFile = new File(CommandExecutor.emplacement + "\\" + commandeArgs[0]);
-	    File destinationFolder = new File(CommandExecutor.emplacement + "\\" + commandeArgs[1]);
+		File sourceFile = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]);
+	    File destinationFolder = new File(unClient.getEmplacement() + "\\" + commandeArgs[1]);
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			if (!destinationFolder.exists()) {

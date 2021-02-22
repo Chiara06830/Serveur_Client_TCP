@@ -1,24 +1,23 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
 public class CommandePASS extends Commande {
 	
-	public CommandePASS(PrintStream ps, String commandeStr) {
-		super(ps, commandeStr);
+	public CommandePASS(PrintStream ps, String commandeStr, GestionUnClient unClient) {
+		super(ps, commandeStr, unClient);
 	}
 
 	public void execute() {
-		File file = new File(CommandExecutor.emplacement + "\\pw.txt").getAbsoluteFile();
+		File file = new File(unClient.getEmplacement() + "\\pw.txt").getAbsoluteFile();
 		// C'est un fichier ?
 		if (file.exists() && !file.isDirectory()) {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				if (br.readLine().equals(commandeArgs[0].toLowerCase())) {
-					CommandExecutor.pwOk = true;
+					unClient.setPwOk(true);
 					ps.println("1 Commande pass OK");
 					ps.println("0 Vous êtes bien connecté sur notre serveur");
 				} else {

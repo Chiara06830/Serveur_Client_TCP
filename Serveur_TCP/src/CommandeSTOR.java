@@ -1,6 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -15,15 +13,15 @@ import java.util.List;
 
 public class CommandeSTOR extends Commande {
 	
-	public CommandeSTOR(PrintStream ps, String commandeStr) {
-		super(ps, commandeStr);
+	public CommandeSTOR(PrintStream ps, String commandeStr, GestionUnClient unClient) {
+		super(ps, commandeStr, unClient);
 	}
 
 	public void execute() {
 		ps.println("1 Le fichier est prêt à être reçu. Port de transfert :");
-		ps.println("0 " + CommandExecutor.prochainPort);
+		ps.println("0 " + unClient.getProchainPort());
 		try {
-			ServerSocket serveurFTP = new ServerSocket(CommandExecutor.prochainPort);
+			ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
 			Socket socket = serveurFTP.accept();
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintStream psTransfert = new PrintStream(socket.getOutputStream());
@@ -37,7 +35,7 @@ public class CommandeSTOR extends Commande {
 					onContinue = false;
 				}
 				if ((ligne.charAt(0)) == '0') {
-					Path fichier = Paths.get(CommandExecutor.emplacement + "\\" + commandeArgs[0]);
+					Path fichier = Paths.get(unClient.getEmplacement() + "\\" + commandeArgs[0]);
 					Files.write(fichier, lignes, Charset.forName("UTF-8"));
 					onContinue = false;
 				}
@@ -48,7 +46,7 @@ public class CommandeSTOR extends Commande {
 			psTransfert.close();
 			serveurFTP.close();
 			socket.close();
-			CommandExecutor.prochainPort += 1;
+			unClient.setProchainPort(unClient.getProchainPort() + 1);
 		} catch (IOException e) {
 			ps.println("2 Erreur lors de l'écriture du fichier");
 			e.printStackTrace();

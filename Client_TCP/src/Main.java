@@ -2,9 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.nio.charset.Charset;
@@ -93,7 +91,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le chemin relatif du repertoire que vous souhaitez accéder");
 					}
 				} else {
 					System.out.println("argument incorrect - cd prend un argument");
@@ -103,7 +101,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lectureGet(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier à télécharger sur le serveur");
 					}
 				} else {
 					System.out.println("argument incorrect - get prend un argument");
@@ -128,7 +126,7 @@ public class Main {
 			case "stor":
 				if (cmd.split(" ").length == 2) {
 					if (!executionEtLectureStor(client, in, ps, sc, cmd.split(" ")[1])) {
-						System.out.print("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur\n");
+						System.out.print("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier à envoyé au serveur\n");
 					}
 				} else {
 					System.out.println("argument incorrect - stor prend un argument");
@@ -138,7 +136,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier a supprimer du serveur");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier a supprimer du serveur");
 					}
 				} else {
 					System.out.println("argument incorrect - delete prend un argument");
@@ -148,7 +146,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du répertoire a supprimer du serveur");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du répertoire a supprimer du serveur");
 					}
 				} else {
 					System.out.println("argument incorrect - deletedir prend un argument");
@@ -158,7 +156,7 @@ public class Main {
 				if (cmd.split(" ").length == 3) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier/répertoire a déplacer, puis le dossier destination (celui-ci sera crée s'il est introuvable)");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier/répertoire a déplacer, puis le dossier destination (celui-ci sera crée s'il est introuvable)");
 					}
 				} else {
 					System.out.println("argument incorrect - mv prend deux arguments. Le fichier à déplacer, puis le repertoire destination");
@@ -171,10 +169,10 @@ public class Main {
 						System.out.println("bye permet de ce déconnecter - aucun argument");
 						break;
 					case "cd":
-						System.out.println("cd permet de ce déplacer sur le serveur - Veuillez rentrez en argument le chemin (absolu ou relatif) du repertoire que vous souhaitez accéder");
+						System.out.println("cd permet de ce déplacer sur le serveur - Veuillez rentrez en argument le chemin relatif du repertoire que vous souhaitez accéder");
 						break;
 					case "get":
-						System.out.println("get permet de télécharger un fichier sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à télécharger sur le serveur");
+						System.out.println("get permet de télécharger un fichier sur le serveur - Veuillez rentrez en argument le nom relatif du fichier à télécharger sur le serveur");
 						break;
 					case "ls":
 						System.out.println("ls permet de voir tous les fichiers du répertoire courant sur le serveur - aucun argument");
@@ -183,16 +181,16 @@ public class Main {
 						System.out.println("pwd renvoie votre position actuel sur le serveur - aucun argument");
 						break;
 					case "stor":
-						System.out.println("stor permet d'envoyer sur le serveur un fichier (crée sur le répertoire courant) - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur");
+						System.out.println("stor permet d'envoyer sur le serveur un fichier (crée sur le répertoire courant) - Veuillez rentrez en argument le nom relatif du fichier à envoyé au serveur");
 						break;
 					case "delete":
-						System.out.println("delete permet de supprimer un fichier sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier a supprimer du serveur");
+						System.out.println("delete permet de supprimer un fichier sur le serveur - Veuillez rentrez en argument le nom relatif du fichier a supprimer du serveur");
 						break;
 					case "deletedir":
-						System.out.println("deletedir permet de supprimer un répertoire vide sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du répertoire a supprimer du serveur");
+						System.out.println("deletedir permet de supprimer un répertoire vide sur le serveur - Veuillez rentrez en argument le nom relatif du répertoire a supprimer du serveur");
 						break;
 					case "mv":
-						System.out.println("mv permet de déplacer un fichier ou tout un repertoire, dans un autre répertoire. Si le répertoire n'est pas trouvé, il sera crée - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier/répertoire a déplacer, puis le dossier destination");
+						System.out.println("mv permet de déplacer un fichier ou tout un repertoire, dans un autre répertoire. Si le répertoire n'est pas trouvé, il sera crée - Veuillez rentrez en argument le nom relatif du fichier/répertoire a déplacer, puis le dossier destination");
 						break;
 					default:
 						System.out.println("argument incorrect - arguments disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv)");
@@ -286,6 +284,8 @@ public class Main {
 				while (true) {
 					String ligne = inTransfert.readLine();
 					if ((ligne.charAt(0)) == '2') {
+						inTransfert.close();
+						transfertGet.close();
 						return false; 
 					}
 					if ((ligne.charAt(0)) == '0') {

@@ -1,16 +1,15 @@
-import java.io.File;
 import java.io.PrintStream;
 
 public class CommandeBYE extends Commande {
 	
-	public CommandeBYE(PrintStream ps, String commandeStr) {
-		super(ps, commandeStr);
+	public CommandeBYE(PrintStream ps, String commandeStr, GestionUnClient unClient) {
+		super(ps, commandeStr, unClient);
 	}
 
 	public void execute() {
-		CommandExecutor.userOk = false;
-		CommandExecutor.pwOk = false;
-		CommandExecutor.emplacement = ".";
+		unClient.setUserOk(false);
+		unClient.setPwOk(false);
+		unClient.setEmplacement(".");
 		ps.println("0 Vous avez été déconnecté");
 	}
 

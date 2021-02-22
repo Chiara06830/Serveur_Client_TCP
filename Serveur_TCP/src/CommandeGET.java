@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -9,18 +8,18 @@ import java.net.Socket;
 
 public class CommandeGET extends Commande {
 	
-	public CommandeGET(PrintStream ps, String commandeStr) {
-		super(ps, commandeStr);
+	public CommandeGET(PrintStream ps, String commandeStr, GestionUnClient unClient) {
+		super(ps, commandeStr, unClient);
 	}
 
 	public void execute() {
-		File file = new File(CommandExecutor.emplacement + "\\" + commandeArgs[0]).getAbsoluteFile();
+		File file = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
 			ps.println("1 Le fichier est prêt à être envoyé. Port de transfert :");
-			ps.println("0 " + CommandExecutor.prochainPort);
+			ps.println("0 " + unClient.getProchainPort());
 			try {
-				ServerSocket serveurFTP = new ServerSocket(CommandExecutor.prochainPort);
+				ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
 				Socket socket = serveurFTP.accept();
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				PrintStream psTransfert = new PrintStream(socket.getOutputStream());
@@ -34,7 +33,7 @@ public class CommandeGET extends Commande {
 				psTransfert.close();
 				serveurFTP.close();
 				socket.close();
-				CommandExecutor.prochainPort += 1;
+				unClient.setProchainPort(unClient.getProchainPort() + 1);
 			} catch (IOException e) {
 				ps.println("2 Erreur lors de la lecture du fichier");
 				e.printStackTrace();
