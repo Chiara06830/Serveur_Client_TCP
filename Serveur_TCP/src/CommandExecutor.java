@@ -25,6 +25,15 @@ public class CommandExecutor {
 			
 			// Déconnexion
 			if(commande.split(" ")[0].equals("bye")) (new CommandeBYE(ps, commande)).execute();
+			
+			// Supprimer un fichier
+			if(commande.split(" ")[0].equals("delete")) (new CommandeDELETE(ps, commande)).execute();
+			
+			// Supprimer un repertoire
+			if(commande.split(" ")[0].equals("deletedir")) (new CommandeDELETEDIR(ps, commande)).execute();
+			
+			// Déplacer un fichier
+			if(commande.split(" ")[0].equals("mv")) (new CommandeMV(ps, commande)).execute();
 		}
 		else {
 			if(commande.split(" ")[0].equals("pass") || commande.split(" ")[0].equals("user")) {

@@ -43,7 +43,7 @@ public class Main {
 		while (!lecture(client, in)) {
 			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		}
-		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,man) - utilisez man pour plus de précision sur une commande.");
+		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
 	}
 	
 	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws IOException {
@@ -113,6 +113,36 @@ public class Main {
 					System.out.println("argument incorrect - stor prend un argument");
 				}
 				break;
+			case "delete":
+				if (cmd.split(" ").length == 2) {
+					ps.println(cmd);
+					if (!lecture(client, in)) {
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier a supprimer du serveur");
+					}
+				} else {
+					System.out.println("argument incorrect - delete prend un argument");
+				}
+				break;
+			case "deletedir":
+				if (cmd.split(" ").length == 2) {
+					ps.println(cmd);
+					if (!lecture(client, in)) {
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du répertoire a supprimer du serveur");
+					}
+				} else {
+					System.out.println("argument incorrect - deletedir prend un argument");
+				}
+				break;
+			case "mv":
+				if (cmd.split(" ").length == 3) {
+					ps.println(cmd);
+					if (!lecture(client, in)) {
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier/répertoire a déplacer, puis le dossier destination (celui-ci sera crée s'il est introuvable)");
+					}
+				} else {
+					System.out.println("argument incorrect - mv prend deux arguments. Le fichier à déplacer, puis le repertoire destination");
+				}
+				break;
 			case "man":
 				if (cmd.split(" ").length == 2) {
 					switch (cmd.split(" ")[1]) {
@@ -134,15 +164,24 @@ public class Main {
 					case "stor":
 						System.out.println("stor permet d'envoyer sur le serveur un fichier (crée sur le répertoire courant) - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier à envoyé au serveur");
 						break;
+					case "delete":
+						System.out.println("delete permet de supprimer un fichier sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier a supprimer du serveur");
+						break;
+					case "deletedir":
+						System.out.println("deletedir permet de supprimer un répertoire vide sur le serveur - Veuillez rentrez en argument le nom (absolu ou relatif) du répertoire a supprimer du serveur");
+						break;
+					case "mv":
+						System.out.println("mv permet de déplacer un fichier ou tout un repertoire, dans un autre répertoire. Si le répertoire n'est pas trouvé, il sera crée - Veuillez rentrez en argument le nom (absolu ou relatif) du fichier/répertoire a déplacer, puis le dossier destination");
+						break;
 					default:
-						System.out.println("argument incorrect - arguments disponibles : (cd,get,ls,pwd,stor,bye)");
+						System.out.println("argument incorrect - arguments disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv)");
 					}
 				} else {
 					System.out.println("argument incorrect - man prend un argument");
 				}
 				break;
 			default:
-				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,man) - utilisez man pour plus de précision sur une commande.");
+				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
 			}
 		}
 		deconnexion(client, ps, in, sc, os);
@@ -260,7 +299,7 @@ public class Main {
 					String ligne;
 					while ((ligne = inTransfert.readLine()) != null)
 						psTransfert.println("1 " + ligne);
-					psTransfert.println("0 " + "ccc.txt" + " : Transfert terminé.");
+					psTransfert.println("0 " + argument + " : Transfert terminé.");
 					
 					inTransfert.close();
 					psTransfert.close();

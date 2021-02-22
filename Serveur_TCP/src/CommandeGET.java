@@ -39,7 +39,7 @@ public class CommandeGET extends Commande {
 				ps.println("2 Erreur lors de la lecture du fichier");
 				e.printStackTrace();
 			}
-		}else {
+		} else {
 			ps.println("2 Le fichier est introuvable");
 		}
 	}
