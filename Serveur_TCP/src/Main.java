@@ -37,6 +37,7 @@ public class Main {
 				CommandExecutor.executeCommande(ps, commande);
 			}
 			
+			System.out.println("Le client c'est déconnecté.");
 			serveurFTP.close();
 			socket.close();
 			main(args);

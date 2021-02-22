@@ -8,8 +8,10 @@ public class CommandeDELETE extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(commandeArgs[0]).getAbsoluteFile();
+		File file = new File(CommandExecutor.emplacement + "\\" + commandeArgs[0]).getAbsoluteFile();
+		System.out.println(file);
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
+		System.out.println(file);
 		if (file.exists() && !file.isDirectory()) {
 			if(file.delete()) {
 				ps.println("0 Le fichier a été supprimé");

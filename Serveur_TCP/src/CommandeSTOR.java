@@ -37,7 +37,7 @@ public class CommandeSTOR extends Commande {
 					onContinue = false;
 				}
 				if ((ligne.charAt(0)) == '0') {
-					Path fichier = Paths.get(commandeArgs[0]);
+					Path fichier = Paths.get(CommandExecutor.emplacement + "\\" + commandeArgs[0]);
 					Files.write(fichier, lignes, Charset.forName("UTF-8"));
 					onContinue = false;
 				}

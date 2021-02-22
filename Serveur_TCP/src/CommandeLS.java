@@ -8,7 +8,7 @@ public class CommandeLS extends Commande {
 	}
 
 	public void execute() {
-		String[] fichiers = new File(".").list();
+		String[] fichiers = new File(CommandExecutor.emplacement).list();
 		int taille = fichiers.length;
 		for(int i = 0; i < taille; i++) {
 			if (i == taille - 1) ps.println("0 " + fichiers[i]);

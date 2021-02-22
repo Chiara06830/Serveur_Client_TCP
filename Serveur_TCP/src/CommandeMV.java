@@ -8,8 +8,8 @@ public class CommandeMV extends Commande {
 	}
 
 	public void execute() {
-		File sourceFile = new File(commandeArgs[0]).getAbsoluteFile();
-	    File destinationFolder = new File(commandeArgs[1]).getAbsoluteFile();
+		File sourceFile = new File(CommandExecutor.emplacement + "\\" + commandeArgs[0]);
+	    File destinationFolder = new File(CommandExecutor.emplacement + "\\" + commandeArgs[1]);
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			if (!destinationFolder.exists()) {
@@ -17,7 +17,7 @@ public class CommandeMV extends Commande {
 					ps.println("2 Le repertoire destination est introuvable et n'a pas pu être crée");
 				}
 			}
-			System.out.println(commandeArgs[1] + "\\" + commandeArgs[0]);
+			System.out.println(destinationFolder + "\\" + commandeArgs[0]);
 			if(sourceFile.renameTo(new File(destinationFolder + "\\" + commandeArgs[0]))) {
 				ps.println("0 Le fichier a été déplacer avec succès");
 			} else {

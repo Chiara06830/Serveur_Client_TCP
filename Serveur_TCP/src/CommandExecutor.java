@@ -2,6 +2,7 @@ import java.io.PrintStream;
 
 public class CommandExecutor {
 	
+	public static String emplacement = ".";
 	public static boolean userOk = false ;
 	public static boolean pwOk = false ;
 	public static int prochainPort = 4502;
