@@ -9,7 +9,7 @@ public class CommandeLS extends Commande {
 
 	public void execute() {
 		String[] fichiers = new File(unClient.getEmplacement()).list();
-		if (fichiers != null) {
+		if (fichiers != null && fichiers.length > 0) {
 			int taille = fichiers.length;
 			for(int i = 0; i < taille; i++) {
 				if (i == taille - 1) ps.println("0 " + fichiers[i]);
