@@ -10,7 +10,7 @@ public class CommandeBYE extends Commande {
 		unClient.setUserOk(false);
 		unClient.setPwOk(false);
 		unClient.setEmplacement(".");
-		ps.println("0 Vous avez été déconnecté");
+		ps.println("0 Vous avez Ã©tÃ© dÃ©connectÃ©");
 	}
 
 }

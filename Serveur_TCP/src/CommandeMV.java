@@ -14,20 +14,20 @@ public class CommandeMV extends Commande {
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			if (!destinationFolder.exists()) {
 				if (!destinationFolder.mkdirs()) {
-					ps.println("2 Le repertoire destination est introuvable et n'a pas pu être crée");
+					ps.println("2 Le repertoire destination est introuvable et n'a pas pu Ãªtre crÃ©e");
 				}
 			}
 			System.out.println(destinationFolder + "\\" + commandeArgs[0]);
 			if(sourceFile.renameTo(new File(destinationFolder + "\\" + commandeArgs[0]))) {
-				ps.println("0 Le fichier a été déplacer avec succès");
+				ps.println("0 Le fichier a Ã©tÃ© dÃ©placer avec succÃ©s");
 			} else {
-			    ps.println("2 Le fichier n'a pas pu déplacer");
+			    ps.println("2 Le fichier n'a pas pu dÃ©placer");
 			}
 		// C'est un repertoire ?
 		} else if (sourceFile.exists() && sourceFile.isDirectory()) {
 			if (!destinationFolder.exists()) {
 				if (!destinationFolder.mkdirs()) {
-					ps.println("2 Le repertoire destination est introuvable et n'a pas pu être crée");
+					ps.println("2 Le repertoire destination est introuvable et n'a pas pu Ãªtre crÃ©e");
 				}
 			}
 			File[] listOfFiles = sourceFile.listFiles();
@@ -42,9 +42,9 @@ public class CommandeMV extends Commande {
 			
 			if (bonFonctionnement) {
 				sourceFile.delete();
-				ps.println("0 Le repertoire a été déplacer avec succès");
+				ps.println("0 Le repertoire a Ã©tÃ© dÃ©placer avec succÃ©s");
 			} else {
-				ps.println("2 Le repertoire n'a pas pu être déplacer");
+				ps.println("2 Le repertoire n'a pas pu Ãªtre dÃ©placer");
 			}
 		} else {
 			ps.println("2 Le fichier source est introuvable");

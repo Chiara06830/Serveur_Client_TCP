@@ -12,9 +12,9 @@ public class CommandeDELETEDIR extends Commande {
 		// C'est un repertoire ?
 		if (file.exists() && file.isDirectory()) {
 			if(file.delete()) {
-				ps.println("0 Le repertoire a été supprimé");
+				ps.println("0 Le repertoire a Ã©tÃ© supprimÃ©");
 			} else {
-			    ps.println("2 La suppression a échouer. Veuillez vérifié que le repertoire est vide");
+			    ps.println("2 La suppression a Ã©chouer. Veuillez vÃ©rifiÃ© que le repertoire est vide");
 			}
 		} else {
 			ps.println("2 Le repertoire est introuvable");

@@ -13,6 +13,7 @@ public class CommandeUSER extends Commande {
 		if (file.exists() && file.isDirectory()) {
 			unClient.setUserOk(true);
 			unClient.setEmplacement(file.getName());
+			unClient.setNom(commandeArgs[0].toLowerCase());
 			ps.println("0 Commande user OK");
 		} else {
 			ps.println("2 Le user " + commandeArgs[0] + " n'existe pas");

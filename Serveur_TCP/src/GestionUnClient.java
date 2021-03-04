@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 public class GestionUnClient implements Runnable {
+	private String nom;
 	private Socket socket;
 	private String emplacement = ".";
 	public boolean userOk = false ;
@@ -22,7 +23,7 @@ public class GestionUnClient implements Runnable {
 	
 	public void run() {
 		try {
-			System.out.println("Le client c'est connecté.");
+			System.out.println("Le client c'est connectÃ©.");
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintStream ps = new PrintStream(socket.getOutputStream());
@@ -38,13 +39,13 @@ public class GestionUnClient implements Runnable {
 				System.out.println(">> "+commande);
 				CommandExecutor.executeCommande(ps, commande, this);
 			}
-			System.out.println("Le client c'est déconnecté.");
+			System.out.println("Le client s'est dÃ©connectÃ©.");
 			setUserOk(false);
 			setPwOk(false);
 			setEmplacement(".");
 			socket.close();
 		} catch (IOException e) {
-			System.out.println("Le client c'est déconnecté.");
+			System.out.println("Le client s'est dÃ©connectÃ©.");
 			setUserOk(false);
 			setPwOk(false);
 			setEmplacement(".");
@@ -96,4 +97,11 @@ public class GestionUnClient implements Runnable {
 		this.prochainPort = prochainPort;
 	}
 
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 }

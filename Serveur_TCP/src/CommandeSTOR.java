@@ -18,7 +18,7 @@ public class CommandeSTOR extends Commande {
 	}
 
 	public void execute() {
-		ps.println("1 Le fichier est prêt à être reçu. Port de transfert :");
+		ps.println("1 Le fichier est prÃªt Ã  Ãªtre reÃ§u. Port de transfert :");
 		ps.println("0 " + unClient.getProchainPort());
 		try {
 			ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
@@ -48,7 +48,7 @@ public class CommandeSTOR extends Commande {
 			socket.close();
 			unClient.setProchainPort(unClient.getProchainPort() + 1);
 		} catch (IOException e) {
-			ps.println("2 Erreur lors de l'écriture du fichier");
+			ps.println("2 Erreur lors de l'Ã©criture du fichier");
 			e.printStackTrace();
 		}
 	}

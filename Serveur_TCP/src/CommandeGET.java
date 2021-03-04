@@ -16,7 +16,7 @@ public class CommandeGET extends Commande {
 		File file = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
-			ps.println("1 Le fichier est prêt à être envoyé. Port de transfert :");
+			ps.println("1 Le fichier est prÃªt Ã  Ãªtre envoyÃ©. Port de transfert :");
 			ps.println("0 " + unClient.getProchainPort());
 			try {
 				ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
@@ -27,7 +27,7 @@ public class CommandeGET extends Commande {
 				String ligne;
 				while ((ligne = br.readLine()) != null)
 					psTransfert.println("1 " + ligne);
-				psTransfert.println("0 " + commandeArgs[0] + " : Transfert terminé.");
+				psTransfert.println("0 " + commandeArgs[0] + " : Transfert terminÃ©.");
 				
 				br.close();
 				psTransfert.close();

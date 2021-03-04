@@ -16,7 +16,7 @@ public class CommandeLS extends Commande {
 				else ps.println("1 " + fichiers[i]);
 	         }
 		} else {
-			ps.println("0 Aucun fichier n'est présent sur ce repertoire");
+			ps.println("0 Aucun fichier n'est prÃ©sent sur ce repertoire");
 		}
 	}
 

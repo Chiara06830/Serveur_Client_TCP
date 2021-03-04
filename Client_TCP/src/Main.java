@@ -34,7 +34,7 @@ public class Main {
 			// Lancement du terminal de commande
 			choisirCommande(client, ps, in, sc);
 		} catch (Exception e) {
-			System.out.println("Le serveur a rencontrer un problème et n'est plus disponible.");
+			System.out.println("Le serveur a rencontrer un problÃ©me et n'est plus disponible.");
 			ps.println("bye");
 			sc.close();
 			try {
@@ -57,7 +57,7 @@ public class Main {
 		while (!lecture(client, in)) {
 			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		}
-		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
+		System.out.println("\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de prÃ©cision sur une commande.");
 	}
 	
 	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive) throws Exception {
@@ -91,7 +91,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le chemin relatif du repertoire que vous souhaitez accéder");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le chemin relatif du repertoire auquel vous souhaitez accÃ©der");
 					}
 				} else {
 					System.out.println("argument incorrect - cd prend un argument");
@@ -101,7 +101,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lectureGet(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier à télécharger sur le serveur");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier Ã  tÃ©lÃ©charger sur le serveur");
 					}
 				} else {
 					System.out.println("argument incorrect - get prend un argument");
@@ -126,7 +126,7 @@ public class Main {
 			case "stor":
 				if (cmd.split(" ").length == 2) {
 					if (!executionEtLectureStor(client, in, ps, sc, cmd.split(" ")[1])) {
-						System.out.print("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier à envoyé au serveur\n");
+						System.out.print("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier Ã  envoyÃ© au serveur\n");
 					}
 				} else {
 					System.out.println("argument incorrect - stor prend un argument");
@@ -146,7 +146,7 @@ public class Main {
 				if (cmd.split(" ").length == 2) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du répertoire a supprimer du serveur");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du rï¿½pertoire a supprimer du serveur");
 					}
 				} else {
 					System.out.println("argument incorrect - deletedir prend un argument");
@@ -156,41 +156,41 @@ public class Main {
 				if (cmd.split(" ").length == 3) {
 					ps.println(cmd);
 					if (!lecture(client, in)) {
-						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier/répertoire a déplacer, puis le dossier destination (celui-ci sera crée s'il est introuvable)");
+						System.out.println("argument incorrect - Veuillez rentrez en argument le nom relatif du fichier/rÃ©pertoire destination, puis le dossier destination (celui-ci sera crÃ©e s'il est introuvable)");
 					}
 				} else {
-					System.out.println("argument incorrect - mv prend deux arguments. Le fichier à déplacer, puis le repertoire destination");
+					System.out.println("argument incorrect - mv prend deux arguments. Le fichier Ã  dÃ©placer, puis le repertoire destination");
 				}
 				break;
 			case "man":
 				if (cmd.split(" ").length == 2) {
 					switch (cmd.split(" ")[1]) {
 					case "bye":
-						System.out.println("bye permet de ce déconnecter - aucun argument");
+						System.out.println("bye permet de ce dÃ©connecter - aucun argument");
 						break;
 					case "cd":
-						System.out.println("cd permet de ce déplacer sur le serveur - Veuillez rentrez en argument le chemin relatif du repertoire que vous souhaitez accéder");
+						System.out.println("cd permet de ce dÃ©placer sur le serveur - Veuillez rentrez en argument le chemin relatif du repertoire que vous souhaitez accÃ©der");
 						break;
 					case "get":
-						System.out.println("get permet de télécharger un fichier sur le serveur - Veuillez rentrez en argument le nom relatif du fichier à télécharger sur le serveur");
+						System.out.println("get permet de tÃ©lÃ©charger un fichier sur le serveur - Veuillez rentrez en argument le nom relatif du fichier Ã  tÃ©lÃ©charger sur le serveur");
 						break;
 					case "ls":
-						System.out.println("ls permet de voir tous les fichiers du répertoire courant sur le serveur - aucun argument");
+						System.out.println("ls permet de voir tous les fichiers du rÃ©pertoire courant sur le serveur - aucun argument");
 						break;
 					case "pwd":
 						System.out.println("pwd renvoie votre position actuel sur le serveur - aucun argument");
 						break;
 					case "stor":
-						System.out.println("stor permet d'envoyer sur le serveur un fichier (crée sur le répertoire courant) - Veuillez rentrez en argument le nom relatif du fichier à envoyé au serveur");
+						System.out.println("stor permet d'envoyer sur le serveur un fichier (crÃ©e sur le rÃ©pertoire courant) - Veuillez rentrez en argument le nom relatif du fichier Ã  envoyÃ© au serveur");
 						break;
 					case "delete":
 						System.out.println("delete permet de supprimer un fichier sur le serveur - Veuillez rentrez en argument le nom relatif du fichier a supprimer du serveur");
 						break;
 					case "deletedir":
-						System.out.println("deletedir permet de supprimer un répertoire vide sur le serveur - Veuillez rentrez en argument le nom relatif du répertoire a supprimer du serveur");
+						System.out.println("deletedir permet de supprimer un rÃ©pertoire vide sur le serveur - Veuillez rentrez en argument le nom relatif du rÃ©pertoire a supprimer du serveur");
 						break;
 					case "mv":
-						System.out.println("mv permet de déplacer un fichier ou tout un repertoire, dans un autre répertoire. Si le répertoire n'est pas trouvé, il sera crée - Veuillez rentrez en argument le nom relatif du fichier/répertoire a déplacer, puis le dossier destination");
+						System.out.println("mv permet de dÃ©placer un fichier ou tout un repertoire, dans un autre rÃ©pertoire. Si le rÃ©pertoire n'est pas trouvÃ©, il sera crÃ©e - Veuillez rentrez en argument le nom relatif du fichier/rÃ©pertoire destination, puis le dossier destination");
 						break;
 					default:
 						System.out.println("argument incorrect - arguments disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv)");
@@ -200,7 +200,7 @@ public class Main {
 				}
 				break;
 			default:
-				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
+				System.out.println("commande inconnu - commandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de prï¿½cision sur une commande.");
 			}
 		}
 		deconnexion(client, ps, in, sc);
@@ -210,7 +210,7 @@ public class Main {
 		// Fermeture du serveur
 		lecture(client, in);
 		// Demande de reconnexion
-		System.out.println("Souhaitez vous fermé le client ? commandes disponibles : (quit,login,man)");
+		System.out.println("Souhaitez vous fermÃ© le client ? commandes disponibles : (quit,login,man)");
 		while (true) {
 			System.out.print(">> ");
 			String cmd = sc.nextLine();
@@ -242,7 +242,7 @@ public class Main {
 						System.out.println("quit permet de fermer le client - aucun argument");
 						break;
 					case "login":
-						System.out.println("login permet de se connecté sur le serveur - aucun argument");
+						System.out.println("login permet de se connectÃ© sur le serveur - aucun argument");
 						break;
 					default:
 						System.out.println("argument incorrect - arguments disponibles : (quit,login)");
@@ -252,7 +252,7 @@ public class Main {
 				}
 				break;
 			default:
-				System.out.println("commande inconnu - commandes disponibles : (quit,login,man) - utilisez man pour plus de précision sur une commande.");
+				System.out.println("commande inconnu - commandes disponibles : (quit,login,man) - utilisez man pour plus de prï¿½cision sur une commande.");
 			}
 		}
 	}
@@ -320,7 +320,7 @@ public class Main {
 					String ligne;
 					while ((ligne = inTransfert.readLine()) != null)
 						psTransfert.println("1 " + ligne);
-					psTransfert.println("0 " + argument + " : Transfert terminé.");
+					psTransfert.println("0 " + argument + " : Transfert terminï¿½.");
 					
 					inTransfert.close();
 					psTransfert.close();

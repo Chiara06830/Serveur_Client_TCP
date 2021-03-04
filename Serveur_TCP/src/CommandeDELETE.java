@@ -13,9 +13,9 @@ public class CommandeDELETE extends Commande {
 		System.out.println(file.toString());
 		if (file.exists() && !file.isDirectory()) {
 			if(file.delete()) {
-				ps.println("0 Le fichier a été supprimé");
+				ps.println("0 Le fichier a Ã©tÃ© supprimÃ©");
 			} else {
-			    ps.println("2 La suppression a échouer");
+			    ps.println("2 La suppression a Ã©chouer");
 			}
 		} else {
 			ps.println("2 Le fichier est introuvable");
