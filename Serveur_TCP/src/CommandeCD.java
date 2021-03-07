@@ -12,7 +12,6 @@ public class CommandeCD extends Commande {
 		String [] chemin = unClient.getEmplacement().split("\\\\");
 		String [] arguments = commandeArgs[0].split("\\\\");
 		//Si il veut sortir de son répértoire
-		System.out.println(arguments[0]);
 		if(arguments[0].equals("..") && chemin[chemin.length-1].equals(unClient.getNom())) {
 			ps.println("2 Vous ne pouvez pas sortir de votre dossier");
 		}else if (f.isDirectory()) { //si le dossier existe
