@@ -25,7 +25,7 @@
                <children>
                   <Label text="Fichiers locaux :" />
                   <TextField fx:id="cheminClient" editable="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
-                  <ListView fx:id="fichierCleint" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
+                  <ListView fx:id="fichierClient" onMouseClicked="#selectionnerClient" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
                   <FlowPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#stor" text="Transférer">
@@ -41,7 +41,7 @@
                <children>
                   <Label text="Fichiers distants :" />
                   <TextField fx:id="cheminServer" editable="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
-                  <ListView fx:id="fichierServer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
+                  <ListView fx:id="fichierServer" onMouseClicked="#selectionnerServer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
                   <FlowPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#delete" text="Supprimer">
