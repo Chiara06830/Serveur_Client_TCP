@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,33 +33,30 @@ public class TransfertController implements Initializable {
 	private ListView<HBox> fichierClient = new ListView<HBox>();
 	@FXML
 	private ListView<HBox> fichierServer = new ListView<HBox>();
+	
+	private String nomFichierClient = null;
+	private String nomFichierServer = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		idClient.setText(ConnexionController.idClient);
 
 		// Initilisation des chemin
-		// TODO avec pwd
-		this.cheminClient.setText("/");
-		this.cheminServer.setText("/");
+		try {
+			//this.cheminClient.setText(ConnexionController.graphique.pwd());
+			this.cheminServer.setText(ConnexionController.graphique.pwd());
 
-		// Affichage des fichiers et dossiers
-		// TODO récuperer les hashmpap a partir de ls
-		Map<String, Boolean> list1 = new HashMap<String, Boolean>();
-		list1.put("a", true);
-		list1.put("b", true);
-		list1.put("c", false);
-		Map<String, Boolean> list2 = new HashMap<String, Boolean>();
-		list2.put("a", true);
-		list2.put("b", true);
-		list2.put("c", false);
-		this.remplirListe(list2, fichierClient);
-		this.remplirListe(list1, fichierServer);
+			// Affichage des fichiers et dossiers
+			this.remplirListe(ConnexionController.graphique.ls(), fichierServer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
 	public void bye(MouseEvent mouseEvent) throws IOException { // deconnexion
-		// TODO deconnecter le client
+		//deconnecter le client
+		ConnexionController.graphique.deconnexion();
 
 		// Changement de page
 		Scene scene = new Scene(FXMLLoader.load(getClass().getResource("./connexion.fxml")));
@@ -80,7 +74,7 @@ public class TransfertController implements Initializable {
 
 			// creation de l'image du fichier
 			ImageView icone = new ImageView(
-					mapentry.getValue() ? "/ihm/icon/file-explorer-icon.png" : "/ihm/icon/img_664.png.crdownload");
+					mapentry.getValue() ? "/ihm/icon/file-explorer-icon.png" : "/ihm/icon/th.jpeg");
 			icone.setFitWidth(15);
 			icone.setFitHeight(15);
 			hb.getChildren().add(icone);
@@ -97,39 +91,49 @@ public class TransfertController implements Initializable {
 		list.setItems(items);
 	}
 	
-	@FXML
+	@FXML //Récuperer le nom du fichier selectionner coté client
 	public void selectionnerClient() {
 		HBox selection = this.fichierClient.getSelectionModel().getSelectedItem();
-		Label fichier = (Label) selection.getChildren().get(1);
-		
-		System.out.println(fichier.getText());
+		if(selection != null) {
+			Label fichier = (Label) selection.getChildren().get(1);
+			this.nomFichierClient = fichier.getText();
+		}
 	}
 	
-	@FXML
+	@FXML //Récuperer le nom du fichier selectionner cote server
 	public void selectionnerServer() {
 		HBox selection = this.fichierServer.getSelectionModel().getSelectedItem();
-		Label fichier = (Label) selection.getChildren().get(1);
-		
-		System.out.println(fichier.getText());
+		if(selection != null) {
+			Label fichier = (Label) selection.getChildren().get(1);
+			this.nomFichierServer = fichier.getText();
+		}
 	}
 
-	@FXML
+	@FXML //supprime un fichier ou repertoire cote server
 	public void delete() {
-
+		if(this.nomFichierServer != null) {
+			
+		}
 	}
 
-	@FXML
+	@FXML //tranfere un fichier ou repertoire server -> client
 	public void get() {
-
+		if(this.nomFichierServer != null) {
+			
+		}
 	}
 
-	@FXML
+	@FXML //deplace un fichier ou dossier cote server
 	public void mv() {
-
+		if(this.nomFichierServer != null) {
+			
+		}
 	}
 
-	@FXML
+	@FXML //tranfere un fichier ou repertoire client -> server
 	public void stor() {
-
+		if(this.nomFichierClient != null) {
+			
+		}
 	}
 }

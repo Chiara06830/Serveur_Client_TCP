@@ -1,3 +1,5 @@
+package application;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,43 +15,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+public class Terminal {
 
-public class Main extends Application{
+	public Terminal() {}
 
-	public static void main(String[] args) {
-		/*
-		 * // Initialisation des composantes pour la reception et l'envoie de messages
-		 * Socket client = null; BufferedReader in = null; PrintStream ps = null;
-		 * Scanner sc = null;
-		 * 
-		 * try { client = new Socket("localhost", 4500); in = new BufferedReader(new
-		 * InputStreamReader(client.getInputStream())); ps = new
-		 * PrintStream(client.getOutputStream()); sc = new Scanner(System.in); //
-		 * Reception du premier message de bienvenue du serveur lecture(client, in); //
-		 * Connexion connexion(client, ps, in, sc); // Lancement du terminal de commande
-		 * choisirCommande(client, ps, in, sc); } catch (Exception e) { System.out.
-		 * println("Le serveur a rencontrer un probléme et n'est plus disponible.");
-		 * ps.println("bye"); sc.close(); try { client.close(); } catch (IOException e1)
-		 * { e1.printStackTrace(); } System.exit(1); }
-		 */
-		
-		launch(args);
-	}
+	public void lancer() {
+		// Initialisation des composantes pour la reception et l'envoie de messages
+		Socket client = null;
+		BufferedReader in = null;
+		PrintStream ps = null;
+		Scanner sc = null;
 
-	@Override
-	public void start(Stage primaryStage) {
 		try {
-			 Parent root = FXMLLoader.load(getClass().getResource("./ihm/connexion.fxml"));
-			 primaryStage.setTitle("Client TCP");
-			 primaryStage.setScene(new Scene(root));
-			 primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
+			client = new Socket("localhost", 4500);
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			ps = new PrintStream(client.getOutputStream());
+			sc = new Scanner(System.in);
+			// Reception du premier message de bienvenue du serveur
+			lecture(client, in);
+			// Connexion
+			connexion(client, ps, in, sc);
+
+			// Lancement du terminal de commande
+			choisirCommande(client, ps, in, sc);
+		} catch (Exception e) {
+			System.out.println("Le serveur a rencontrer un probléme et n'est plus disponible.");
+			ps.println("bye");
+			sc.close();
+			try {
+				client.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			System.exit(1);
 		}
 	}
 
@@ -360,5 +358,4 @@ public class Main extends Application{
 			return false;
 		}
 	}
-
 }
