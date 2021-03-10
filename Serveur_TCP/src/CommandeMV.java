@@ -8,8 +8,8 @@ public class CommandeMV extends Commande {
 	}
 
 	public void execute() {
-		File sourceFile = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]);
-	    File destinationFolder = new File(unClient.getEmplacement() + "\\" + commandeArgs[1]);
+		File sourceFile = new File(unClient.getEmplacement() + "/" + commandeArgs[0]);
+	    File destinationFolder = new File(unClient.getEmplacement() + "/" + commandeArgs[1]);
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			if (!destinationFolder.exists()) {
@@ -17,8 +17,8 @@ public class CommandeMV extends Commande {
 					ps.println("2 Le repertoire destination est introuvable et n'a pas pu être crée");
 				}
 			}
-			System.out.println(destinationFolder + "\\" + commandeArgs[0]);
-			if(sourceFile.renameTo(new File(destinationFolder + "\\" + commandeArgs[0]))) {
+			System.out.println(destinationFolder + "/" + commandeArgs[0]);
+			if(sourceFile.renameTo(new File(destinationFolder + "/" + commandeArgs[0]))) {
 				ps.println("0 Le fichier a été déplacer avec succés");
 			} else {
 			    ps.println("2 Le fichier n'a pas pu déplacer");
@@ -34,7 +34,7 @@ public class CommandeMV extends Commande {
 			boolean bonFonctionnement = true;
 			if (listOfFiles != null) {
 	            for (File child : listOfFiles) {
-	                if(!child.renameTo(new File(destinationFolder + "\\" + child.getName()))) {
+	                if(!child.renameTo(new File(destinationFolder + "/" + child.getName()))) {
 	                	bonFonctionnement = false;
 	                }
 	            }

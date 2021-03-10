@@ -8,7 +8,7 @@ public class CommandeDELETE extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]).getAbsoluteFile();
+		File file = new File(unClient.getEmplacement() + "/" + commandeArgs[0]).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		System.out.println(file.toString());
 		if (file.exists() && !file.isDirectory()) {

@@ -8,10 +8,9 @@ public class CommandeDELETEDIR extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(unClient.getEmplacement() + "\\" + commandeArgs[0]).getAbsoluteFile();
-		String [] chemin = unClient.getEmplacement().split("\\\\");
-		String [] suppression = unClient.getEmplacement().split("\\\\");
-		if(suppression[suppression.length-1].equals(chemin[chemin.length-1])) {
+		File file = new File(unClient.getEmplacement() + "/" + commandeArgs[0]).getAbsoluteFile();
+		String [] chemin = unClient.getEmplacement().split("/");
+		if(commandeArgs[0].equals(chemin[chemin.length-1])) {
 			ps.println("2 Vous ne pouvez pas supprimé le répertoire courant");
 		}else
 		// C'est un repertoire ?

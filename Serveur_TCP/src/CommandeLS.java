@@ -8,22 +8,25 @@ public class CommandeLS extends Commande {
 	}
 
 	public void execute() {
-		File[] fichiers = new File(unClient.getEmplacement()).listFiles();
+		File[] fichiers = new File(unClient.getEmplacement()).getAbsoluteFile().listFiles();
 		if (fichiers != null && fichiers.length > 0) {
 			int taille = fichiers.length;
 			for(int i = 0; i < taille; i++) {
+				System.out.println(fichiers[i]);
+				//System.out.println(fichiers[i].getAbsoluteFile());
+				String[] chemin = fichiers[i].toString().split("/");
 				if (i == taille - 1) { //si c'est le dernier
-					if(fichiers[i].getAbsoluteFile().isDirectory()) {
-						ps.println("0 #" + fichiers[i].toString().split("\\\\")[1]);
+					if(fichiers[i].isDirectory()) {
+						ps.println("0 #" + chemin[chemin.length-1]);
 					}else {
-						ps.println("0 " + fichiers[i].toString().split("\\\\")[1]);
+						ps.println("0 " + chemin[chemin.length-1]);
 					}
 				}
 				else {
-					if(fichiers[i].getAbsoluteFile().isDirectory()) {
-						ps.println("1 # " + fichiers[i].toString().split("\\\\")[1]);
+					if(fichiers[i].isDirectory()) {
+						ps.println("1 # " + chemin[chemin.length-1]);
 					}else {
-						ps.println("1 " + fichiers[i].toString().split("\\\\")[1]);
+						ps.println("1 " + chemin[chemin.length-1]);
 					}
 				}
 	         }

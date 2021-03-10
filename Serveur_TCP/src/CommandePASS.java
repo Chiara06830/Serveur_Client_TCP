@@ -11,7 +11,7 @@ public class CommandePASS extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(unClient.getEmplacement() + "\\pw.txt").getAbsoluteFile();
+		File file = new File(unClient.getEmplacement() + "/pw.txt").getAbsoluteFile();
 		// C'est un fichier ?
 		if (file.exists() && !file.isDirectory()) {
 			try {
