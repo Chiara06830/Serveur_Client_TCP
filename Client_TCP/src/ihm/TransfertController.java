@@ -36,6 +36,9 @@ public class TransfertController implements Initializable {
 	
 	private String nomFichierClient = null;
 	private String nomFichierServer = null;
+	
+	private Map<String, Boolean> fichiers;
+	private boolean move = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -43,14 +46,19 @@ public class TransfertController implements Initializable {
 
 		// Initilisation des chemin
 		try {
-			//this.cheminClient.setText(ConnexionController.graphique.pwd());
-			this.cheminServer.setText(ConnexionController.graphique.pwd());
-
-			// Affichage des fichiers et dossiers
-			this.remplirListe(ConnexionController.graphique.ls(), fichierServer);
+			this.affichage();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void affichage() throws Exception {
+		//this.cheminClient.setText(ConnexionController.graphique.pwd());
+		this.cheminServer.setText(ConnexionController.graphique.pwd());
+
+		// Affichage des fichiers et dossiers
+		this.fichiers = ConnexionController.graphique.ls();
+		this.remplirListe(this.fichiers, fichierServer);
 	}
 
 	@FXML
@@ -92,10 +100,15 @@ public class TransfertController implements Initializable {
 	}
 	
 	@FXML //Récuperer le nom du fichier selectionner coté client
-	public void selectionnerClient() {
+	public void selectionnerClient() throws Exception {
 		HBox selection = this.fichierClient.getSelectionModel().getSelectedItem();
+		
 		if(selection != null) {
 			Label fichier = (Label) selection.getChildren().get(1);
+			if(this.move) { //si on clique pour déplacer un fichier
+				ConnexionController.graphique.mv(this.nomFichierServer, fichier.getText());
+				this.move = false;
+			}
 			this.nomFichierClient = fichier.getText();
 		}
 	}
@@ -110,9 +123,13 @@ public class TransfertController implements Initializable {
 	}
 
 	@FXML //supprime un fichier ou repertoire cote server
-	public void delete() {
+	public void delete() throws IOException {
 		if(this.nomFichierServer != null) {
-			
+			if(this.fichiers.get(this.nomFichierServer)) { //si c'est un dossier
+				ConnexionController.graphique.envoieCommande("deletedir", this.nomFichierServer);
+			}else { //si c'est un fichier
+				ConnexionController.graphique.envoieCommande("delete",this.nomFichierServer);
+			}
 		}
 	}
 
@@ -124,9 +141,9 @@ public class TransfertController implements Initializable {
 	}
 
 	@FXML //deplace un fichier ou dossier cote server
-	public void mv() {
+	public void mv() throws IOException {
 		if(this.nomFichierServer != null) {
-			
+			this.move = !this.move; //autorise le déplacement au prochain clique
 		}
 	}
 
