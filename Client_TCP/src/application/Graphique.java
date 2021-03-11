@@ -1,6 +1,8 @@
 package application;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -19,13 +21,19 @@ public class Graphique {
 	BufferedReader in = null;
 	PrintStream ps = null;
 	
+	public String emplacement = "espaceClient";
+	
 	public Graphique() {
 		try {
 			client = new Socket("localhost", 4500);
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			ps = new PrintStream(client.getOutputStream());
 			// Reception du premier message de bienvenue du serveur
-			in.readLine();
+			String lu;
+			do{
+				lu = in.readLine();
+				System.out.println(lu);
+			}while(lu.charAt(0) == '1');
 		} catch (Exception e) {
 			System.out.println("Le serveur a rencontrer un probléme et n'est plus disponible.");
 			ps.println("bye");
@@ -44,6 +52,7 @@ public class Graphique {
 		String lu;
 		do{
 			lu = in.readLine();
+			System.out.println(lu);
 			if(lu.charAt(0) == '2') {
 				return false;
 			}
@@ -53,29 +62,19 @@ public class Graphique {
 	
 	public boolean connexion(String id, String mdp) throws Exception {
 		// commande USER
-		ps.println("user " + id);
-		String lu;
-		do{
-			lu = in.readLine();
-			if (lu.charAt(0) == '2') {
-				return false;
-			}
-		}while(lu.charAt(0) == '1');
+		if(!this.envoieCommande("user", id)) {
+			return false;
+		}
 
 		// commande PASS
-		ps.println("pass " + mdp);
-		do{
-			lu = in.readLine();
-			if (lu.charAt(0) == '2') {
-				return false;
-			}
-		}while(lu.charAt(0) == '1');
-		
-		//recup message confirmation
-		do{lu = in.readLine();}while(lu.charAt(0) == '1');
+		if(!this.envoieCommande("pass", mdp)) {
+			return false;
+		}
 		
 		return true;
 	}
+	
+	//---------------------COTE SERVER---------------------//
 	
 	public String pwd() throws Exception {
 		ps.println("pwd");
@@ -103,12 +102,8 @@ public class Graphique {
 	}
 	
 	public void deconnexion() throws IOException {
-		ps.println("bye");
-		
-		String lu;
-		do{lu = in.readLine();}while(lu.charAt(0) == '1');
-		
-		ps.println("login");
+		this.envoieCommande("bye", "");
+		this.envoieCommande("login", "");
 	}
 	
 	public void mv(String origine, String destination) throws IOException {
@@ -148,6 +143,75 @@ public class Graphique {
 					lignes.add(ligne.substring(2));
 				}
 			}
+		}
+	}
+	
+	//---------------------COTE CLIENT---------------------//
+	
+	public Map<String, Boolean> lsClient(){
+		Map<String, Boolean> map = new HashMap<String, Boolean>();
+		File[] fichiers = new File("." + File.separator + this.emplacement).getAbsoluteFile().listFiles();
+		if (fichiers != null && fichiers.length > 0) {
+			for(int i=0; i<fichiers.length; i++) {
+				if(fichiers[i].isDirectory()) {
+					map.put(fichiers[i].getName(), true);
+				}else {
+					map.put(fichiers[i].getName(), false);
+				}
+			}
+		}
+		return map;
+	}
+	
+	public String pwdClient() {
+		return new File(this.emplacement).getAbsoluteFile().toString();
+	}
+	
+	public boolean cd(String nom) {
+		if(nom.equals("..")) {
+			if(!this.emplacement.equals("espaceClient")) {
+				String[] chemin  = this.emplacement.split("\\" + File.separator);
+				this.emplacement.substring(0, chemin[chemin.length-1].length());
+			}else {
+				return false;
+			}
+		}else {
+			this.emplacement += File.separator + nom;
+		}
+		System.out.println(this.emplacement);
+		return true;
+	}
+
+	public boolean stor(String argument) throws IOException {
+		File file = new File(this.emplacement + File.separator + argument).getAbsoluteFile();
+		// C'est un fichier ? && Ce n'est pas un repertoire ?
+		if (file.exists() && !file.isDirectory()) {
+			ps.println("stor " + argument);
+			while (true) {
+				String msg = in.readLine();
+				System.out.println(msg);
+				if ((msg.charAt(0)) == '2') {
+					return false;
+				}
+				if ((msg.charAt(0)) == '0') {
+					Socket transfertStor = new Socket("localhost", Integer.parseInt(msg.substring(2)));
+					BufferedReader inTransfert = new BufferedReader(new FileReader(file));
+					PrintStream psTransfert = new PrintStream(transfertStor.getOutputStream());
+
+					String ligne;
+					while ((ligne = inTransfert.readLine()) != null)
+						psTransfert.println("1 " + ligne);
+					psTransfert.println("0 " + argument + " : Transfert terminé.");
+
+					inTransfert.close();
+					psTransfert.close();
+					transfertStor.close();
+					return true;
+				}
+			}
+		} else {
+			System.out.println("Le fichier est introuvable.");
+			return false;
 		}
 	}
 }

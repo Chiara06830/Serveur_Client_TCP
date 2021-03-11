@@ -10,7 +10,6 @@ public class CommandeDELETE extends Commande {
 	public void execute() {
 		File file = new File(unClient.getEmplacement() + File.separator + commandeArgs[0]).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
-		System.out.println(file.toString());
 		if (file.exists() && !file.isDirectory()) {
 			if(file.delete()) {
 				ps.println("0 Le fichier a été supprimé");

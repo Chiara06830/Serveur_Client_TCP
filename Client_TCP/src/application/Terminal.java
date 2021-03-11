@@ -313,7 +313,7 @@ public class Terminal {
 						return false;
 					}
 					if ((ligne.charAt(0)) == '0') {
-						Path fichier = Paths.get(ligne.split(" ")[1]);
+						Path fichier = Paths.get("espaceClient" + File.separator + ligne.split(" ")[1]);
 						Files.write(fichier, lignes, Charset.forName("UTF-8"));
 						inTransfert.close();
 						transfertGet.close();
@@ -327,7 +327,7 @@ public class Terminal {
 
 	public static boolean executionEtLectureStor(Socket client, BufferedReader in, PrintStream ps, Scanner sc,
 			String argument) throws IOException {
-		File file = new File(argument).getAbsoluteFile();
+		File file = new File("espaceClient" + File.separator + argument).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
 			ps.println("stor " + argument);
@@ -345,7 +345,7 @@ public class Terminal {
 					String ligne;
 					while ((ligne = inTransfert.readLine()) != null)
 						psTransfert.println("1 " + ligne);
-					psTransfert.println("0 " + argument + " : Transfert termin�.");
+					psTransfert.println("0 " + argument + " : Transfert terminé.");
 
 					inTransfert.close();
 					psTransfert.close();

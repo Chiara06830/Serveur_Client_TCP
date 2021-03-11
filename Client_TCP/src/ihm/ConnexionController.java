@@ -3,12 +3,12 @@ package ihm;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.Graphique;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -18,11 +18,11 @@ public class ConnexionController implements Initializable{
 	@FXML
 	private TextField identifiant;
 	@FXML
-	private TextField password; 
+	private PasswordField password; 
 	@FXML 
 	private Label erreure;
 	
-	public static Graphique graphique = new Graphique();
+	
 	public static String idClient = null;
 
 	@Override
@@ -30,7 +30,7 @@ public class ConnexionController implements Initializable{
 	
 	@FXML
 	public void connexion(MouseEvent mouseEvent) throws Exception {
-		if(graphique.connexion(this.identifiant.getText(), this.password.getText())) {
+		if(ChoixController.graphique.connexion(this.identifiant.getText(), this.password.getText())) {
 			//attribution de l'id du client
 			idClient = this.identifiant.getText();
 			

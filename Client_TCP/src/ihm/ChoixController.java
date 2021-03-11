@@ -11,10 +11,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
+import application.Graphique;
 import application.Terminal;
 
 public class ChoixController implements Initializable{
+	
+	public static Graphique graphique;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {}
@@ -29,6 +31,7 @@ public class ChoixController implements Initializable{
 	
 	@FXML
 	public void lancerGraphique(MouseEvent mouseEvent) throws IOException {
+		ChoixController.graphique = new Graphique();
 		Scene scene = new Scene(FXMLLoader.load(getClass().getResource("./connexion.fxml")));
         Stage appStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         appStage.setScene(scene);
