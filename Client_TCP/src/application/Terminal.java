@@ -63,7 +63,7 @@ public class Terminal {
 			envoieCommande(client, ps, sc, "pass", "Veuillez rentrez votre mot de passe : ");
 		}
 		System.out.println(
-				"\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv,man) - utilisez man pour plus de précision sur une commande.");
+				"\nCommandes disponibles : (cd,get,ls,pwd,stor,bye,delete,deletedir,mv, createdir, man) - utilisez man pour plus de précision sur une commande.");
 	}
 
 	public static void envoieCommande(Socket client, PrintStream ps, Scanner sc, String commande, String directive)
@@ -174,6 +174,18 @@ public class Terminal {
 				} else {
 					System.out.println(
 							"argument incorrect - mv prend deux arguments. Le fichier à déplacer, puis le repertoire destination");
+				}
+				break;
+			case "createdir":
+				if(cmd.split(" ").length == 2) {
+					ps.println(cmd);
+					if(!lecture(client, in)) {
+						System.out.println("argument incorrect - Veuillez entrer le nom du fichier à créer");
+						
+					}		
+				}
+				else {
+					System.out.println("argument incorrect - createdir prend un argument");	
 				}
 				break;
 			case "man":

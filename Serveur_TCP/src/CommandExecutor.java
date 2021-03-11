@@ -30,6 +30,9 @@ public class CommandExecutor {
 			
 			// D�placer un fichier
 			if(commande.split(" ")[0].equals("mv")) (new CommandeMV(ps, commande, unClient)).execute();
+			//Créer un répertoire
+			if(commande.split(" ")[0].equals("createdir")) (new CommandeCREATEDIR(ps, commande, unClient)).execute();
+			
 		}
 		else {
 			if(commande.split(" ")[0].equals("pass") || commande.split(" ")[0].equals("user")) {
