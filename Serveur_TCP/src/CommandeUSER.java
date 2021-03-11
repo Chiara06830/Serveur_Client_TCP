@@ -8,7 +8,7 @@ public class CommandeUSER extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(unClient.getEmplacement() + "/" + commandeArgs[0].toLowerCase());
+		File file = new File(unClient.getEmplacement() + File.separator + commandeArgs[0].toLowerCase());
 		// C'est un repertoire ?
 		System.out.println("Avant le if");
 		System.out.println(file);

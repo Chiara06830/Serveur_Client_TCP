@@ -8,13 +8,13 @@ public class CommandeCD extends Commande {
 	}
 
 	public void execute() {
-		if (commandeArgs[0].equals("/") || commandeArgs[0].equals("~")) {
+		if (commandeArgs[0].equals(File.separator) || commandeArgs[0].equals("~")) {
 			unClient.setEmplacement(unClient.getNom());
 			ps.println("0 L'emplacement courant a bien été modifié");
 		} else {
-			File f = new File (unClient.getEmplacement() + "/" + commandeArgs[0]);
-			String [] chemin = unClient.getEmplacement().split("/");
-			String [] arguments = commandeArgs[0].split("/");
+			File f = new File (unClient.getEmplacement() + File.separator + commandeArgs[0]);
+			String [] chemin = unClient.getEmplacement().split("\\" + File.separator);
+			String [] arguments = commandeArgs[0].split("\\" + File.separator);
 			//Si il veut sortir de son répértoire
 			if(arguments[0].equals("..") && chemin[chemin.length-1].equals(unClient.getNom())) {
 				ps.println("2 Vous ne pouvez pas sortir de votre dossier");

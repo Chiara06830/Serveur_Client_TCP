@@ -8,8 +8,8 @@ public class CommandeDELETEDIR extends Commande {
 	}
 
 	public void execute() {
-		File file = new File(unClient.getEmplacement() + "/" + commandeArgs[0]).getAbsoluteFile();
-		String [] chemin = unClient.getEmplacement().split("/");
+		File file = new File(unClient.getEmplacement() + File.separator + commandeArgs[0]).getAbsoluteFile();
+		String [] chemin = unClient.getEmplacement().split("\\" + File.separator);
 		if(commandeArgs[0].equals(chemin[chemin.length-1])) {
 			ps.println("2 Vous ne pouvez pas supprimé le répertoire courant");
 		}else

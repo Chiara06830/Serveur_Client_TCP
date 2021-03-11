@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -35,7 +36,7 @@ public class CommandeSTOR extends Commande {
 					onContinue = false;
 				}
 				if ((ligne.charAt(0)) == '0') {
-					Path fichier = Paths.get(unClient.getEmplacement() + "/" + commandeArgs[0]);
+					Path fichier = Paths.get(unClient.getEmplacement() + File.separator + commandeArgs[0]);
 					Files.write(fichier, lignes, Charset.forName("UTF-8"));
 					onContinue = false;
 				}

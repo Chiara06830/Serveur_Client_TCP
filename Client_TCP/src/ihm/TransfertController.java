@@ -14,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -123,13 +125,20 @@ public class TransfertController implements Initializable {
 	}
 
 	@FXML //supprime un fichier ou repertoire cote server
-	public void delete() throws IOException {
+	public void delete() throws Exception {
 		if(this.nomFichierServer != null) {
 			if(this.fichiers.get(this.nomFichierServer)) { //si c'est un dossier
-				ConnexionController.graphique.envoieCommande("deletedir", this.nomFichierServer);
+				if(!ConnexionController.graphique.envoieCommande("deletedir", this.nomFichierServer)) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Action impossible");
+					alert.setHeaderText("Vous ne pouvez pas supprimer un dossier qui n'est pas vide");
+
+					alert.showAndWait();
+				}
 			}else { //si c'est un fichier
 				ConnexionController.graphique.envoieCommande("delete",this.nomFichierServer);
 			}
+			this.affichage();
 		}
 	}
 

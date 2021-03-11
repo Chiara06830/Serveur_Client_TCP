@@ -19,7 +19,7 @@ public class CommandExecutor {
 			// Envoyer (uploader) un fichier
 			if(commande.split(" ")[0].equals("stor")) (new CommandeSTOR(ps, commande, unClient)).execute();
 			
-			// Déconnexion
+			// Dï¿½connexion
 			if(commande.split(" ")[0].equals("bye")) (new CommandeBYE(ps, commande, unClient)).execute();
 			
 			// Supprimer un fichier
@@ -28,7 +28,7 @@ public class CommandExecutor {
 			// Supprimer un repertoire
 			if(commande.split(" ")[0].equals("deletedir")) (new CommandeDELETEDIR(ps, commande, unClient)).execute();
 			
-			// Déplacer un fichier
+			// Dï¿½placer un fichier
 			if(commande.split(" ")[0].equals("mv")) (new CommandeMV(ps, commande, unClient)).execute();
 		}
 		else {
@@ -40,7 +40,7 @@ public class CommandExecutor {
 				if(commande.split(" ")[0].equals("user")) (new CommandeUSER(ps, commande, unClient)).execute();
 			}
 			else
-				ps.println("2 Vous n'êtes pas connecté !");
+				ps.println("2 Vous n'Ãªtes pas connectÃ© !");
 		}
 	}
 

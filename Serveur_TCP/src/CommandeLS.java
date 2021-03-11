@@ -12,9 +12,7 @@ public class CommandeLS extends Commande {
 		if (fichiers != null && fichiers.length > 0) {
 			int taille = fichiers.length;
 			for(int i = 0; i < taille; i++) {
-				System.out.println(fichiers[i]);
-				//System.out.println(fichiers[i].getAbsoluteFile());
-				String[] chemin = fichiers[i].toString().split("/");
+				String[] chemin = fichiers[i].toString().split("\\" + File.separator);
 				if (i == taille - 1) { //si c'est le dernier
 					if(fichiers[i].isDirectory()) {
 						ps.println("0 #" + chemin[chemin.length-1]);
