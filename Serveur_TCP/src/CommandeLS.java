@@ -15,7 +15,7 @@ public class CommandeLS extends Commande {
 				String[] chemin = fichiers[i].toString().split("\\" + File.separator);
 				if (i == taille - 1) { //si c'est le dernier
 					if(fichiers[i].isDirectory()) {
-						ps.println("0 #" + chemin[chemin.length-1]);
+						ps.println("0 # " + chemin[chemin.length-1]);
 					}else {
 						ps.println("0 " + chemin[chemin.length-1]);
 					}

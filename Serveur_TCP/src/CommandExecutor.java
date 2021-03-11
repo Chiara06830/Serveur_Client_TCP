@@ -19,7 +19,7 @@ public class CommandExecutor {
 			// Envoyer (uploader) un fichier
 			if(commande.split(" ")[0].equals("stor")) (new CommandeSTOR(ps, commande, unClient)).execute();
 			
-			// D�connexion
+			// Déconnexion
 			if(commande.split(" ")[0].equals("bye")) (new CommandeBYE(ps, commande, unClient)).execute();
 			
 			// Supprimer un fichier

@@ -88,8 +88,10 @@ public class Graphique {
 		String[] lu;
 		map.put("..", true);
 		do{
-			lu = in.readLine().split(" ");
-			if(!lu[lu.length-1].equals("pw.txt")) {
+			String ligne = in.readLine();
+			lu = ligne.split(" ");
+			
+			if(!lu[lu.length-1].equals("pw.txt") && !ligne.equals("0 Aucun fichier n'est présent sur ce repertoire")) {
 				if(lu[1].equals("#")) {
 					map.put(lu[2], true);
 				}else {
@@ -150,6 +152,11 @@ public class Graphique {
 	
 	public Map<String, Boolean> lsClient(){
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
+		
+		if(!this.emplacement.equals("espaceClient")) {//si on est pas a la racine
+			map.put("..", true);//on offre la possibilté de remonter
+		}
+		
 		File[] fichiers = new File("." + File.separator + this.emplacement).getAbsoluteFile().listFiles();
 		if (fichiers != null && fichiers.length > 0) {
 			for(int i=0; i<fichiers.length; i++) {
@@ -160,6 +167,7 @@ public class Graphique {
 				}
 			}
 		}
+		
 		return map;
 	}
 	
@@ -169,16 +177,11 @@ public class Graphique {
 	
 	public boolean cd(String nom) {
 		if(nom.equals("..")) {
-			if(!this.emplacement.equals("espaceClient")) {
-				String[] chemin  = this.emplacement.split("\\" + File.separator);
-				this.emplacement.substring(0, chemin[chemin.length-1].length());
-			}else {
-				return false;
-			}
+			String[] chemin  = this.emplacement.split("\\" + File.separator);
+			this.emplacement = this.emplacement.substring(0, this.emplacement.length() - (chemin[chemin.length-1].length()+1));
 		}else {
 			this.emplacement += File.separator + nom;
 		}
-		System.out.println(this.emplacement);
 		return true;
 	}
 
@@ -186,32 +189,44 @@ public class Graphique {
 		File file = new File(this.emplacement + File.separator + argument).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
-			ps.println("stor " + argument);
-			while (true) {
-				String msg = in.readLine();
-				System.out.println(msg);
-				if ((msg.charAt(0)) == '2') {
+			return this.storOneFile(argument, file);
+		} /*else if(file.exists() && file.isDirectory()){
+			File[] contenu = new File(this.emplacement + File.separator + argument).getAbsoluteFile().listFiles();
+			for(int i=0; i<contenu.length; i++) {
+				if(!this.storOneFile((argument + File.separator + contenu[i].getName()), contenu[i])) {
 					return false;
 				}
-				if ((msg.charAt(0)) == '0') {
-					Socket transfertStor = new Socket("localhost", Integer.parseInt(msg.substring(2)));
-					BufferedReader inTransfert = new BufferedReader(new FileReader(file));
-					PrintStream psTransfert = new PrintStream(transfertStor.getOutputStream());
-
-					String ligne;
-					while ((ligne = inTransfert.readLine()) != null)
-						psTransfert.println("1 " + ligne);
-					psTransfert.println("0 " + argument + " : Transfert terminé.");
-
-					inTransfert.close();
-					psTransfert.close();
-					transfertStor.close();
-					return true;
-				}
 			}
-		} else {
+			return true;
+		}*/else {
 			System.out.println("Le fichier est introuvable.");
 			return false;
+		}
+	}
+	
+	public boolean storOneFile(String argument, File file) throws IOException {
+		ps.println("stor " + argument);
+		while (true) {
+			String msg = in.readLine();
+			System.out.println(msg);
+			if ((msg.charAt(0)) == '2') {
+				return false;
+			}
+			if ((msg.charAt(0)) == '0') {
+				Socket transfertStor = new Socket("localhost", Integer.parseInt(msg.substring(2)));
+				BufferedReader inTransfert = new BufferedReader(new FileReader(file));
+				PrintStream psTransfert = new PrintStream(transfertStor.getOutputStream());
+
+				String ligne;
+				while ((ligne = inTransfert.readLine()) != null)
+					psTransfert.println("1 " + ligne);
+				psTransfert.println("0 " + argument + " : Transfert terminé.");
+
+				inTransfert.close();
+				psTransfert.close();
+				transfertStor.close();
+				return true;
+			}
 		}
 	}
 }

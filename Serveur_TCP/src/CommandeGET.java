@@ -16,31 +16,39 @@ public class CommandeGET extends Commande {
 		File file = new File(unClient.getEmplacement() + File.separator + commandeArgs[0]).getAbsoluteFile();
 		// C'est un fichier ? && Ce n'est pas un repertoire ?
 		if (file.exists() && !file.isDirectory()) {
-			ps.println("1 Le fichier est prêt à être envoyé. Port de transfert :");
-			ps.println("0 " + unClient.getProchainPort());
-			try {
-				ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
-				Socket socket = serveurFTP.accept();
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				PrintStream psTransfert = new PrintStream(socket.getOutputStream());
-				
-				String ligne;
-				while ((ligne = br.readLine()) != null)
-					psTransfert.println("1 " + ligne);
-				psTransfert.println("0 " + commandeArgs[0] + " : Transfert terminé.");
-				
-				br.close();
-				psTransfert.close();
-				serveurFTP.close();
-				socket.close();
-				unClient.setProchainPort(unClient.getProchainPort() + 1);
-			} catch (IOException e) {
-				ps.println("2 Erreur lors de la lecture du fichier");
-				e.printStackTrace();
+			this.getOneFile(file);
+		} /*if (file.exists() && !file.isDirectory()){
+			File[] contenu = new File(unClient.getEmplacement() + File.separator + commandeArgs[0]).getAbsoluteFile().listFiles();
+			for(int i=0; i<contenu.length; i++) {
+				this.getOneFile(contenu[i]);
 			}
-		} else {
+		}*/else {
 			ps.println("2 Le fichier est introuvable");
 		}
 	}
 
+	public void getOneFile(File file) {
+		ps.println("1 Le fichier est prêt à être envoyé. Port de transfert :");
+		ps.println("0 " + unClient.getProchainPort());
+		try {
+			ServerSocket serveurFTP = new ServerSocket(unClient.getProchainPort());
+			Socket socket = serveurFTP.accept();
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			PrintStream psTransfert = new PrintStream(socket.getOutputStream());
+			
+			String ligne;
+			while ((ligne = br.readLine()) != null)
+				psTransfert.println("1 " + ligne);
+			psTransfert.println("0 " + commandeArgs[0] + " : Transfert terminé.");
+			
+			br.close();
+			psTransfert.close();
+			serveurFTP.close();
+			socket.close();
+			unClient.setProchainPort(unClient.getProchainPort() + 1);
+		} catch (IOException e) {
+			ps.println("2 Erreur lors de la lecture du fichier");
+			e.printStackTrace();
+		}
+	}
 }
