@@ -52,7 +52,8 @@ public class Graphique {
 		String lu;
 		do {
 			lu = in.readLine();
-			if(lu == null) break;
+			if (lu == null)
+				break;
 			System.out.println(lu);
 			if (lu.charAt(0) == '2') {
 				return false;
@@ -120,14 +121,33 @@ public class Graphique {
 	}
 
 	public boolean get(String nom) throws Exception {
-		if (this.ls().get(nom)) {
+		if (this.ls().get(nom)) {//si c'est un dossier
+			//création du dossier
 			File newFile = new File(this.emplacement + File.separator + nom);
 			if (!newFile.mkdirs()) {
 				return false;
 			}
-		} 
-		this.envoieCommande("get", nom);
-		
+			//on se déplace dans le dossier
+			this.envoieCommande("cd", nom);
+			//pour chaque fichier qu'il contient on le copie
+			Map<String, Boolean> map = this.ls();
+			for (Map.Entry<String, Boolean> mapentry : map.entrySet()) {
+				if(!mapentry.getValue()) {
+					ps.println("get " + mapentry.getKey());
+					if(!this.lectureGet("espaceClient" + File.separator + nom + File.separator)) {
+						return false;
+					}
+				}
+			}
+			//on retourne dans le répertoire d'origine
+			this.envoieCommande("cd", "..");
+			return true;
+		}else {
+			ps.println("get " + nom);
+			return this.lectureGet("espaceClient" + File.separator);
+		}
+	}
+	public boolean lectureGet(String chemin) throws IOException {
 		while (true) {
 			String msg = in.readLine();
 			System.out.println(msg);
@@ -135,11 +155,8 @@ public class Graphique {
 				return false;
 			}
 			if ((msg.charAt(0)) == '0') {
-				System.out.println("1");
 				Socket transfertGet = new Socket("localhost", Integer.parseInt(msg.substring(2)));
-				System.out.println("2");
 				BufferedReader inTransfert = new BufferedReader(new InputStreamReader(transfertGet.getInputStream()));
-				System.out.println("3");
 				List<String> lignes = new ArrayList<String>();
 				while (true) {
 					String ligne = inTransfert.readLine();
@@ -149,7 +166,8 @@ public class Graphique {
 						return false;
 					}
 					if ((ligne.charAt(0)) == '0') {
-						Path fichier = Paths.get(ligne.split(" ")[1]);
+						System.out.println(ligne);
+						Path fichier = Paths.get(chemin + ligne.split(" ")[1]);
 						Files.write(fichier, lignes, Charset.forName("UTF-8"));
 						inTransfert.close();
 						transfertGet.close();
