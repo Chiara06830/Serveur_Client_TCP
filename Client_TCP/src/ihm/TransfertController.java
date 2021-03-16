@@ -24,6 +24,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class TransfertController implements Initializable {
 	@FXML
@@ -43,6 +44,8 @@ public class TransfertController implements Initializable {
 	private Map<String, Boolean> fichiersServer;
 	private Map<String, Boolean> fichiersClient;
 	private boolean move = false;
+	
+	public static String nomDossier = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -188,5 +191,23 @@ public class TransfertController implements Initializable {
 			ChoixController.graphique.stor(this.nomFichierClient);
 			this.affichage();
 		}
+	}
+	
+	@FXML
+	public void createDir(MouseEvent mouseEvent) throws Exception {
+		final URL fxmlUrl = getClass().getResource("/ihm/popNouveauDossier.fxml");
+	    final FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
+	    Pane root = fxmlLoader.load();
+	    
+		Stage popup = new Stage();
+	    popup.setTitle("Créer un dossier");
+	    Scene scene = new Scene(root);
+	    
+	    popup.setScene(scene);
+	    popup.showAndWait();
+	    
+	    ChoixController.graphique.envoieCommande("createdir", TransfertController.nomDossier);
+	    TransfertController.nomDossier = null;
+	    this.affichage();
 	}
 }

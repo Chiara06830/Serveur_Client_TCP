@@ -181,7 +181,6 @@ public class Terminal {
 					ps.println(cmd);
 					if(!lecture(client, in)) {
 						System.out.println("argument incorrect - Veuillez entrer le nom du fichier à créer");
-						
 					}		
 				}
 				else {

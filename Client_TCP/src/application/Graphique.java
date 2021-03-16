@@ -229,4 +229,12 @@ public class Graphique {
 			}
 		}
 	}
+	
+	public void quit() throws IOException {
+		ps.println("bye ");
+		ps.println("bye");
+		in.close();
+		client.close();
+		System.exit(1);
+	}
 }

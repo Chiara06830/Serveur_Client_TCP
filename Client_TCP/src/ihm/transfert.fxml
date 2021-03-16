@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane minHeight="400.0" minWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="ihm.TransfertController">
+<AnchorPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.TransfertController">
    <children>
       <Label fx:id="idClient" text="Nom client" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
@@ -41,7 +40,7 @@
                <children>
                   <Label text="Fichiers distants :" />
                   <TextField fx:id="cheminServer" editable="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
-                  <ListView fx:id="fichierServer" onMouseClicked="#selectionnerServer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
+                  <ListView fx:id="fichierServer" onMouseClicked="#selectionnerServer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0" />
                   <FlowPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#delete" text="Supprimer">
@@ -59,6 +58,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </FlowPane.margin>
                         </Button>
+                        <Button mnemonicParsing="false" onMouseClicked="#createDir" text="Nouveau répértoire" />
                      </children>
                   </FlowPane>
                </children>
