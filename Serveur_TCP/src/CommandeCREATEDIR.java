@@ -20,11 +20,8 @@ public class CommandeCREATEDIR extends Commande {
 				System.out.println(newFile);
 				System.out.println(newFile.exists());
 				
-				if(!(newFile.exists())) {
-					System.out.println("Ici");
-				
+				if(!(newFile.exists())) {				
 					if(newFile.mkdirs()) {
-						System.out.println("La");
 						ps.println("0 Le répertoire "+newFile+" a été créé");			
 						
 					}
