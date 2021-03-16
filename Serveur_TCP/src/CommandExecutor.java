@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.io.PrintStream;
 
 public class CommandExecutor {
 	
-	public static void executeCommande(PrintStream ps, String commande, GestionUnClient unClient) {
+	public static void executeCommande(PrintStream ps, String commande, GestionUnClient unClient) throws IOException {
 		if(unClient.isUserOk() && unClient.isPwOk()) {
 			// Changer de repertoire. Un (..) permet de revenir au repertoire superieur
 			if(commande.split(" ")[0].equals("cd")) (new CommandeCD(ps, commande, unClient)).execute();

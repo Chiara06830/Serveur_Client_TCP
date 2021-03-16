@@ -172,9 +172,10 @@ public class TransfertController implements Initializable {
 	}
 
 	@FXML //tranfere un fichier ou repertoire server -> client
-	public void get() throws IOException {
+	public void get() throws Exception {
 		if(this.nomFichierServer != null && !this.nomFichierServer.equals("..")) {
 			ChoixController.graphique.get(this.nomFichierServer);
+			this.affichage();
 		}
 	}
 

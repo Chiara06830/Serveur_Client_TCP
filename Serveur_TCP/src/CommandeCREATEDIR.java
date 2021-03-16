@@ -13,12 +13,9 @@ public class CommandeCREATEDIR extends Commande {
 		// TODO Auto-generated method stub
 		
 		String testPath[] = commandeArgs[0].split("\\"+ File.separator);
-		System.out.println(unClient.getEmplacement());
 		if(!(commandeArgs[0].equals(File.separator) && !(commandeArgs[0].equals("~")))) {
 			if(	!((unClient.getEmplacement().equals("personne")) && (testPath[0].equals(".."))) ) {
 				File newFile = new File(unClient.getEmplacement()+ File.separator + commandeArgs[0]);
-				System.out.println(newFile);
-				System.out.println(newFile.exists());
 				
 				if(!(newFile.exists())) {				
 					if(newFile.mkdirs()) {
